@@ -11,10 +11,6 @@ namespace International_Business_Men.DL.Contracts
     public interface IRepository<T> where T : IEntity
     {
         Task<IEnumerable<T>> GetAll();
-        Task<T> GetById(object id);
         IEnumerable<T> Where(Expression<Func<T, bool>> exp);
-        void Insert(T entity);
-        void Update(T entity);
-        void Delete(T entity);
     }
 }

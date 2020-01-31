@@ -14,7 +14,7 @@ namespace International_Business_Men.DAL.Models
 
         public object GetId()
         {
-            return new { From, To };
+            return new []{ From, To };
         }
     }
 }

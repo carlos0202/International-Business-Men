@@ -16,9 +16,5 @@ namespace International_Business_Men.DL.Contracts
 
         IEnumerable<T> Where(Expression<Func<T, bool>> exp);
 
-        void AddOrUpdate(T entry);
-
-        void Remove(object id);
-
     }
 }
