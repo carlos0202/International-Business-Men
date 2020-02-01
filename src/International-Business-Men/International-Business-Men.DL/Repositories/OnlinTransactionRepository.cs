@@ -5,25 +5,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace International_Business_Men.DL.Repositories
 {
-    public class OnlineTransactionRepository : IRepository<Transaction>
+    public class OnlineTransactionRepository : IRepository<ProductTransaction>
     {
-        private readonly OnlineDbContext _context;
+        private readonly IOnlineContext _context;
 
-        public OnlineTransactionRepository(OnlineDbContext context)
+        public OnlineTransactionRepository(IOnlineContext context)
         {
             _context = context;
         }
-        public async Task<IEnumerable<Transaction>> GetAll()
+        public async Task<IEnumerable<ProductTransaction>> GetAll()
         {
             return await _context.GetTransactionsAsync();
         }
 
-        public IEnumerable<Transaction> Where(Expression<Func<Transaction, bool>> exp)
+        public IEnumerable<ProductTransaction> Where(Expression<Func<ProductTransaction, bool>> exp)
         {
             return _context.GetTransactions().AsQueryable().Where(exp);
         }

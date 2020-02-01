@@ -12,9 +12,9 @@ namespace International_Business_Men.DL.Repositories
 {
     public class OnlineCurrencyRateRepository : IRepository<CurrencyRate>
     {
-        private readonly OnlineDbContext _context;
+        private readonly IOnlineContext _context;
 
-        public OnlineCurrencyRateRepository(OnlineDbContext context)
+        public OnlineCurrencyRateRepository(IOnlineContext context)
         {
             _context = context;
         }

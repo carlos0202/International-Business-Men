@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Events;
 using Serilog.Formatting.Compact;
 
 namespace International_Business_Men.API
@@ -18,7 +14,8 @@ namespace International_Business_Men.API
             // default logger to catch nasty startup errors.
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
-                .WriteTo.File(new RenderedCompactJsonFormatter(), "/logs/log-global.json")
+                .WriteTo.File(new RenderedCompactJsonFormatter(), "/logs/global-log.json")
+                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
                 .CreateLogger();
             try
             {

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace International_Business_Men.DAL.Models
 {
-    public class Transaction: IEntity
+    public class ProductTransaction: IEntity
     {
+        public long Id { get; set; }
         public string SKU { get; set; }
         public decimal Amount { get; set; }
         public string Currency { get; set; }

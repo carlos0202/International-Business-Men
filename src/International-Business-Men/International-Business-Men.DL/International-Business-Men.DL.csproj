@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <ProjectReference Include="..\International-Busines-Men.DAL\International-Business-Men.DAL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\International-Busines-Men.DAL\International-Business-Men.DAL.csproj" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

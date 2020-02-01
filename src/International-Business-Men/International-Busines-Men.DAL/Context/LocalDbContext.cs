@@ -6,14 +6,13 @@ namespace International_Business_Men.DAL.Context
     public class LocalDbContext: DbContext
     {
         public DbSet<CurrencyRate> CurrencyRates { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<ProductTransaction> Transactions { get; set; }
 
         public LocalDbContext(DbContextOptions<LocalDbContext> options) : base(options)
         {
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=RatesDB;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,9 +25,12 @@ namespace International_Business_Men.DAL.Context
                 .HasColumnType("decimal(12, 4)");
 
             // Mapping primary key and money holder column for Transaction Entity
-            modelBuilder.Entity<Transaction>()
-                .HasKey(o => o.SKU);
-            modelBuilder.Entity<Transaction>()
+            modelBuilder.Entity<ProductTransaction>()
+                .HasKey(o => o.Id);
+            modelBuilder.Entity<ProductTransaction>()
+                .Property(o => o.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<ProductTransaction>()
                 .Property(b => b.Amount)
                 .HasColumnType("decimal(16, 4)");
         }

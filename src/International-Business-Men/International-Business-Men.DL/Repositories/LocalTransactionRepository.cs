@@ -12,23 +12,23 @@ using System.Threading.Tasks;
 namespace International_Business_Men.DL.Repositories
 {
 
-    public class LocalTransactionRepository : ILocalSourceRepository<Transaction>
+    public class LocalTransactionRepository : ILocalSourceRepository<ProductTransaction>
     {
         private readonly LocalDbContext _context;
 
-        private readonly DbSet<Transaction> _entities;
+        private readonly DbSet<ProductTransaction> _entities;
 
         public LocalTransactionRepository(LocalDbContext context)
         {
             _context = context;
             _entities = context.Transactions;
         }
-        public async Task<IEnumerable<Transaction>> GetAll()
+        public async Task<IEnumerable<ProductTransaction>> GetAll()
         {
             return await _entities.ToListAsync();
         }
 
-        public IEnumerable<Transaction> Refresh(IEnumerable<Transaction> newSource)
+        public IEnumerable<ProductTransaction> Refresh(IEnumerable<ProductTransaction> newSource)
         {
             _entities.RemoveRange(_entities.ToList());
             _entities.AddRange(newSource);
@@ -36,7 +36,7 @@ namespace International_Business_Men.DL.Repositories
             return _entities.ToList();
         }
 
-        public IEnumerable<Transaction> Where(Expression<Func<Transaction, bool>> exp)
+        public IEnumerable<ProductTransaction> Where(Expression<Func<ProductTransaction, bool>> exp)
         {
             return _entities.Where(exp);
         }
