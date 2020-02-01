@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Serilog;
 using Microsoft.OpenApi.Models;
 using AutoMapper;
 
@@ -24,6 +23,7 @@ namespace International_Business_Men.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging();
             services.AddControllers();
             services.AddDbContext<LocalDbContext>(options =>
             {
@@ -49,8 +49,9 @@ namespace International_Business_Men.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseSerilogRequestLogging();
+            // Add global exception middleware to catch unhandled exceptions.
+            app.UseMiddleware<GlobalExceptionMiddleware>();
+            //TODO Replace Serilog with default Framework logging tool
 
             app.UseHttpsRedirection();
 

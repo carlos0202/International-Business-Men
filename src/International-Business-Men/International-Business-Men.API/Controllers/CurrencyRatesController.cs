@@ -3,9 +3,9 @@ using International_Business_Men.DAL.Models;
 using International_Business_Men.DL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Transactions;
 
 namespace International_Business_Men.API.Controllers
 {
@@ -13,14 +13,15 @@ namespace International_Business_Men.API.Controllers
     [Route("api/[controller]")]
     public class CurrencyRatesController
     {
-        private readonly ILogger<CurrencyRatesController> _logger;
         private readonly IService<CurrencyRate> _currencyRatesService;
+        private readonly ILogger _logger;
 
-        public CurrencyRatesController(ILogger<CurrencyRatesController> logger, 
-            IService<CurrencyRate> currencyRatesService)
+        public CurrencyRatesController(
+            IService<CurrencyRate> currencyRatesService,
+            ILogger<CurrencyRatesController> logger)
         {
-            _logger = logger;
             _currencyRatesService = currencyRatesService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -32,6 +33,7 @@ namespace International_Business_Men.API.Controllers
                 StatusCode = 200,
                 Result = transactions
             };
+            _logger.LogInformation($"Currency Rates info retreived at: {DateTime.Now}");
 
             return result;
         }

@@ -2,6 +2,7 @@
 using International_Business_Men.DL.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -26,6 +27,9 @@ namespace International_Business_Men.DL.Services
             try
             {
                 rates = await _onlineRepository.GetAll();
+                if (!rates.Any()) {
+                    rates = await _localCurrencyRateRepository.GetAll();
+                }
                 _localCurrencyRateRepository.Refresh(rates);
             } catch(Exception)
             {
@@ -43,6 +47,10 @@ namespace International_Business_Men.DL.Services
             try
             {
                 rates = _onlineRepository.Where(exp);
+                if (!rates.Any())
+                {
+                    rates = _localCurrencyRateRepository.Where(exp);
+                }
             }
             catch (Exception)
             {

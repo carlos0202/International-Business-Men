@@ -2,6 +2,7 @@
 using International_Business_Men.DL.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -22,35 +23,43 @@ namespace International_Business_Men.DL.Services
 
         public async Task<IEnumerable<ProductTransaction>> GetAsync()
         {
-            IEnumerable<ProductTransaction> rates;
+            IEnumerable<ProductTransaction> transactions;
             try
             {
-                rates = await _onlineRepository.GetAll();
-                _localCurrencyRateRepository.Refresh(rates);
+                transactions = await _onlineRepository.GetAll();
+                if (!transactions.Any())
+                {
+                    transactions = await _localCurrencyRateRepository.GetAll();
+                }
+                _localCurrencyRateRepository.Refresh(transactions);
             } catch(Exception)
             {
                 //TODO log that online repo is dead.
-                rates = await _localCurrencyRateRepository.GetAll();
+                transactions = await _localCurrencyRateRepository.GetAll();
             }
 
-            return rates;
+            return transactions;
         }
 
         public IEnumerable<ProductTransaction> Where(Expression<Func<ProductTransaction, bool>> exp)
         {
-            IEnumerable<ProductTransaction> rates;
+            IEnumerable<ProductTransaction> transactions;
 
             try
             {
-                rates = _onlineRepository.Where(exp);
+                transactions = _onlineRepository.Where(exp);
+                if (!transactions.Any())
+                {
+                    transactions = _localCurrencyRateRepository.Where(exp);
+                }
             }
             catch (Exception)
             {
                 //TODO log that online repo is dead.
-                rates = _localCurrencyRateRepository.Where(exp);
+                transactions = _localCurrencyRateRepository.Where(exp);
             }
 
-            return rates;
+            return transactions;
         }
     }
 }

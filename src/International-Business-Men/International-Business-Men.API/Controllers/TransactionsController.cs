@@ -4,6 +4,7 @@ using International_Business_Men.DAL.Models;
 using International_Business_Men.DL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -14,17 +15,18 @@ namespace International_Business_Men.API.Controllers
     [Route("api/[controller]")]
     public class TransactionsController
     {
-        private readonly ILogger<TransactionsController> _logger;
         private readonly IService<ProductTransaction> _transactionService;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public TransactionsController(ILogger<TransactionsController> logger, 
+        public TransactionsController(
             IService<ProductTransaction> transactionService,
-            IMapper mapper)
+            IMapper mapper,
+            ILogger<TransactionsController> logger)
         {
-            _logger = logger;
             _transactionService = transactionService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -36,6 +38,7 @@ namespace International_Business_Men.API.Controllers
                 StatusCode = 200,
                 Result = _mapper.Map<IEnumerable<TransactionDTO>>(transactions)
             };
+            _logger.LogInformation($"Transaction info retreived at: {DateTime.Now}");
 
             return result;
         }
