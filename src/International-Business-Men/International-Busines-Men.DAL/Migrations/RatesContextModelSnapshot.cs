@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace International_Business_Men.DAL.Migrations
 {
-    [DbContext(typeof(RatesContext))]
+    [DbContext(typeof(LocalDbContext))]
     partial class RatesContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

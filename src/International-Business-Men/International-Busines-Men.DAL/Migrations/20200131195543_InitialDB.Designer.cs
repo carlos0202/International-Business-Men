@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace International_Business_Men.DAL.Migrations
 {
-    [DbContext(typeof(RatesContext))]
+    [DbContext(typeof(LocalDbContext))]
     [Migration("20200131195543_InitialDB")]
     partial class InitialDB
     {

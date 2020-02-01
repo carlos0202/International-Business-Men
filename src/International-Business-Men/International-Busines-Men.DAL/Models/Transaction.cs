@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace International_Business_Men.DAL.Models
 {
-    public class CurrencyRate: IEntity
+    public class Transaction: IEntity
     {
-        public string From { get; set; }
-        public string To { get; set; }
-        public decimal Rate { get; set; }
+        public string SKU { get; set; }
+        public decimal Amount { get; set; }
+        public string Currency { get; set; }
     }
 }

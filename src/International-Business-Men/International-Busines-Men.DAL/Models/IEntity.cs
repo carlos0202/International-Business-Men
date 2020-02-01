@@ -6,6 +6,5 @@ namespace International_Business_Men.DAL.Models
 {
     public interface IEntity
     {
-        object GetId();
     }
 }

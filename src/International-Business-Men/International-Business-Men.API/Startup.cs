@@ -28,7 +28,7 @@ namespace International_Business_Men.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<RatesContext>(options =>
+            services.AddDbContext<LocalDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Context"));
             });

@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 namespace International_Business_Men.DL.Services
 {
 
-    public class CurrencyRateService : IService<CurrencyRate>
+    public class TransactionService : IService<Transaction>
     {
-        private readonly IRepository<CurrencyRate> _onlineRepository;
-        private readonly ILocalSourceRepository<CurrencyRate> _localCurrencyRateRepository;
+        private readonly IRepository<Transaction> _onlineRepository;
+        private readonly ILocalSourceRepository<Transaction> _localCurrencyRateRepository;
 
-        public CurrencyRateService(IRepository<CurrencyRate> repository, 
-            ILocalSourceRepository<CurrencyRate> localCurrencyRateRepository)
+        public TransactionService(IRepository<Transaction> onlineRepository, 
+            ILocalSourceRepository<Transaction> localRepository)
         {
-            _onlineRepository = repository;
-            _localCurrencyRateRepository = localCurrencyRateRepository;
+            _onlineRepository = onlineRepository;
+            _localCurrencyRateRepository = localRepository;
         }
 
-        public async Task<IEnumerable<CurrencyRate>> GetAsync()
+        public async Task<IEnumerable<Transaction>> GetAsync()
         {
-            IEnumerable<CurrencyRate> rates;
+            IEnumerable<Transaction> rates;
             try
             {
                 rates = await _onlineRepository.GetAll();
@@ -36,9 +36,9 @@ namespace International_Business_Men.DL.Services
             return rates;
         }
 
-        public IEnumerable<CurrencyRate> Where(Expression<Func<CurrencyRate, bool>> exp)
+        public IEnumerable<Transaction> Where(Expression<Func<Transaction, bool>> exp)
         {
-            IEnumerable<CurrencyRate> rates;
+            IEnumerable<Transaction> rates;
 
             try
             {
