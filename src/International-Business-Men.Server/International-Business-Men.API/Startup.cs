@@ -25,6 +25,8 @@ namespace International_Business_Men.API
         {
             services.AddLogging();
             services.AddControllers();
+            // Add Cors with default options
+            services.AddCors();
             services.AddDbContext<LocalDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Context"));
@@ -51,7 +53,9 @@ namespace International_Business_Men.API
             }
             // Add global exception middleware to catch unhandled exceptions.
             app.UseMiddleware<GlobalExceptionMiddleware>();
-            //TODO Replace Serilog with default Framework logging tool
+
+            // This option is only suitable for dev environments (it allows any origin).
+            app.UseCors(options => options.AllowAnyOrigin());
 
             app.UseHttpsRedirection();
 

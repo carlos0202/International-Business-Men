@@ -63,6 +63,17 @@ namespace International_Business_Men.API.Tests.ControllerTests
             Assert.Single(transactions.Result);
         }
 
+        [Fact]
+        public void Can_Get_By_SKU()
+        {
+            // Arrange
+            var sku = "2600";
+
+            // Act
+            var transactions = TestController.GetBySku(sku).Result;
+            // Assert
+            Assert.Single(transactions);
+        }
 
         [Fact]
         public void Can_Get_From_Local_When_Online_Empty()

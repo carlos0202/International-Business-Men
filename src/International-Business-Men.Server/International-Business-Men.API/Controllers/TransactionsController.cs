@@ -43,5 +43,19 @@ namespace International_Business_Men.API.Controllers
             return result;
         }
 
+        [HttpGet("{sku}")]
+        public ResponseModel<IEnumerable<TransactionDTO>> GetBySku(string sku)
+        {
+            var transactions = _transactionService.Where(e => e.SKU == sku);
+            var result = new ResponseModel<IEnumerable<TransactionDTO>>
+            {
+                StatusCode = 200,
+                Result = _mapper.Map<IEnumerable<TransactionDTO>>(transactions)
+            };
+            _logger.LogInformation($"Transaction info for sku: {sku}, retreived at: {DateTime.Now}");
+
+            return result;
+        }
+
     }
 }

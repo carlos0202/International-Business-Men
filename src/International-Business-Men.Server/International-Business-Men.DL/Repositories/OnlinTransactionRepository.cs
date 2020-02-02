@@ -24,7 +24,7 @@ namespace International_Business_Men.DL.Repositories
 
         public IEnumerable<ProductTransaction> Where(Expression<Func<ProductTransaction, bool>> exp)
         {
-            return _context.GetTransactions().AsQueryable().Where(exp);
+            return _context.GetTransactions().AsQueryable().Where(exp).ToList();
         }
     }
 }

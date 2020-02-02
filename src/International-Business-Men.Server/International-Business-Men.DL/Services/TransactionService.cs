@@ -12,13 +12,13 @@ namespace International_Business_Men.DL.Services
     public class TransactionService : IService<ProductTransaction>
     {
         private readonly IRepository<ProductTransaction> _onlineRepository;
-        private readonly ILocalSourceRepository<ProductTransaction> _localCurrencyRateRepository;
+        private readonly ILocalSourceRepository<ProductTransaction> _localRepository;
 
         public TransactionService(IRepository<ProductTransaction> onlineRepository, 
             ILocalSourceRepository<ProductTransaction> localRepository)
         {
             _onlineRepository = onlineRepository;
-            _localCurrencyRateRepository = localRepository;
+            _localRepository = localRepository;
         }
 
         public async Task<IEnumerable<ProductTransaction>> GetAsync()
@@ -29,13 +29,13 @@ namespace International_Business_Men.DL.Services
                 transactions = await _onlineRepository.GetAll();
                 if (!transactions.Any())
                 {
-                    transactions = await _localCurrencyRateRepository.GetAll();
+                    transactions = await _localRepository.GetAll();
                 }
-                _localCurrencyRateRepository.Refresh(transactions);
+                _localRepository.Refresh(transactions);
             } catch(Exception)
             {
                 //TODO log that online repo is dead.
-                transactions = await _localCurrencyRateRepository.GetAll();
+                transactions = await _localRepository.GetAll();
             }
 
             return transactions;
@@ -50,13 +50,13 @@ namespace International_Business_Men.DL.Services
                 transactions = _onlineRepository.Where(exp);
                 if (!transactions.Any())
                 {
-                    transactions = _localCurrencyRateRepository.Where(exp);
+                    transactions = _localRepository.Where(exp);
                 }
             }
             catch (Exception)
             {
                 //TODO log that online repo is dead.
-                transactions = _localCurrencyRateRepository.Where(exp);
+                transactions = _localRepository.Where(exp);
             }
 
             return transactions;

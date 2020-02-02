@@ -3,6 +3,7 @@ using International_Business_Men.API.Controllers;
 using International_Business_Men.DAL.Models;
 using International_Business_Men.DL.Contracts;
 using International_Business_Men.DL.Services;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -47,7 +48,8 @@ namespace International_Business_Men.API.Tests.ControllerTests
             LocalRepository.Setup(x => x.Refresh(rates));
 
             Service = new CurrencyRateService(OnlineRepository.Object, LocalRepository.Object);
-            TestController = new CurrencyRatesController(Service);
+            var Logger = (ILogger<CurrencyRatesController>)fixture.Server.Host.Services.GetService(typeof(ILogger<CurrencyRatesController>));
+            TestController = new CurrencyRatesController(Service, Logger);
         }
 
         [Fact]

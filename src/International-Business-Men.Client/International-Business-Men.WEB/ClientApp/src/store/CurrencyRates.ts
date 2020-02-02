@@ -6,7 +6,6 @@ import { AppThunkAction } from './';
 
 export interface CurrencyRatesState {
     isLoading: boolean;
-    startDateIndex?: number;
     currencyRates: CurrencyRate[];
 }
 
@@ -14,6 +13,12 @@ export interface CurrencyRate {
     from: string;
     to: string;
     rate: number;
+}
+
+export interface ResponseModel<T> {
+    statusCode: number,
+    statusMessage: string,
+    result: T[];
 }
 
 // -----------------
@@ -41,12 +46,12 @@ export const actionCreators = {
     requestCurrencyRates: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
         // Only load data if it's something we don't already have (and are not already loading)
         const appState = getState();
-        console.log(`${process.env.REACT_APP_API_URL}`);
-        if (appState && appState.CurrencyRates) {
-            fetch(`${process.env.REACT_APP_API_URL}/api/CurrencyRates`)
-                .then(response => response.json() as Promise<CurrencyRate[]>)
+
+        if (appState && appState.currencyRates) {
+            fetch(`${process.env.REACT_APP_API_URL}/CurrencyRates`)
+                .then(response => response.json() as Promise<ResponseModel<CurrencyRate>>)
                 .then(data => {
-                    dispatch({ type: 'RECEIVE_CURRENCY_RATES', currencyRates: data });
+                    dispatch({ type: 'RECEIVE_CURRENCY_RATES', currencyRates: data.result });
                 });
 
             dispatch({ type: 'REQUEST_CURRENCY_RATES' });
@@ -72,8 +77,6 @@ export const reducer: Reducer<CurrencyRatesState> = (state: CurrencyRatesState |
                 isLoading: true
             };
         case 'RECEIVE_CURRENCY_RATES':
-            // Only accept the incoming data if it matches the most recent request. This ensures we correctly
-            // handle out-of-order responses.
             if (action.currencyRates) {
                 return {
                     currencyRates: action.currencyRates,

@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router';
-import { Link } from 'react-router-dom';
 import { ApplicationState } from '../store';
 import * as CurrencyRatesStore from '../store/CurrencyRates';
 
@@ -17,16 +15,12 @@ class CurrencyRates extends React.PureComponent<CurrencyRateProps> {
         this.ensureDataFetched();
     }
 
-    // This method is called when the route parameters change
-    public componentDidUpdate() {
-        this.ensureDataFetched();
-    }
-
     public render() {
         return (
             <React.Fragment>
-                <h1 id="tabelLabel">Weather forecast</h1>
-                <p>This component demonstrates fetching data from the server and working with URL parameters.</p>
+                <h1 id="tabelLabel">Conversiones</h1>
+                <p>Esta es la tabla de conversi&oacute;n entre monedas soportada por el proveedor de datos actual.</p>
+                <br />
                 {this.renderCurrencyRatesTable()}
             </React.Fragment>
         );
@@ -61,6 +55,6 @@ class CurrencyRates extends React.PureComponent<CurrencyRateProps> {
 }
 
 export default connect(
-    (state: ApplicationState) => state.CurrencyRates, // Selects which state properties are merged into the component's props
+    (state: ApplicationState) => state.currencyRates, // Selects which state properties are merged into the component's props
     CurrencyRatesStore.actionCreators // Selects which action creators are merged into the component's props
 )(CurrencyRates as any);

@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "International-Business-Men.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "International-Business-Men.DL", "International-Business-Men.DL\International-Business-Men.DL.csproj", "{64CD28BA-C6F7-4934-B5D4-14739DD99783}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "International-Business-Men.WEB", "International-Business-Men.WEB\International-Business-Men.WEB.csproj", "{921F8E9B-91D4-40DA-8BBB-58B5933EBCEF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "International-Business-Men.DAL", "International-Busines-Men.DAL\International-Business-Men.DAL.csproj", "{7ECE6B2E-7EB5-400F-945B-0B8AA916CC1E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "International-Business-Men.DL.Tests", "International-Business-Men.DL.Tests\International-Business-Men.DL.Tests.csproj", "{E027087D-A3D4-4178-9DB4-D2C9B35323F0}"
@@ -29,10 +27,6 @@ Global
 		{64CD28BA-C6F7-4934-B5D4-14739DD99783}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64CD28BA-C6F7-4934-B5D4-14739DD99783}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64CD28BA-C6F7-4934-B5D4-14739DD99783}.Release|Any CPU.Build.0 = Release|Any CPU
-		{921F8E9B-91D4-40DA-8BBB-58B5933EBCEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{921F8E9B-91D4-40DA-8BBB-58B5933EBCEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{921F8E9B-91D4-40DA-8BBB-58B5933EBCEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{921F8E9B-91D4-40DA-8BBB-58B5933EBCEF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7ECE6B2E-7EB5-400F-945B-0B8AA916CC1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7ECE6B2E-7EB5-400F-945B-0B8AA916CC1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7ECE6B2E-7EB5-400F-945B-0B8AA916CC1E}.Release|Any CPU.ActiveCfg = Release|Any CPU

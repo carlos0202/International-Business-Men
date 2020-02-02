@@ -29,6 +29,9 @@ export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/currency-rates">Conversiones</NavLink>
                                 </NavItem>
+                                <NavItem>
+                                    <NavLink tag={Link} className="text-dark" to="/transactions">Transacciones</NavLink>
+                                </NavItem>
                             </ul>
                         </Collapse>
                     </Container>
