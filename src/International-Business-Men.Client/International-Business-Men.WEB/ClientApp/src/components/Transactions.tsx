@@ -8,10 +8,18 @@ import {
     Form, InputGroup,
     InputGroupAddon,
     Input,
-    InputGroupText
+    InputGroupText,
+    FormGroup,
+    Label,
+    Row,
+    Col,
+    Card,
+    CardTitle
 } from 'reactstrap';
 import { roundNumber, getConversionAmount } from '../utils/math';
 import { bindActionCreators } from 'redux';
+import TransactionsTable from './TransactionsTable';
+import './Transactions.css';
 
 // At runtime, Redux will merge together...
 type TransactionProps =
@@ -21,9 +29,10 @@ type TransactionProps =
     & typeof CurrencyRatesStore.actionCreators
     & RouteComponentProps<{ sku: string }>;
 
-class Transactions extends React.PureComponent<TransactionProps, { }, { sku: string }> {
+class Transactions extends React.PureComponent<TransactionProps, {}, { sku: string, convertCurrency: string }> {
     public state = {
-        sku: ''
+        sku: '',
+        convertCurrency: 'EUR'
     };
 
     // This method is called when the component is first added to the document
@@ -42,28 +51,43 @@ class Transactions extends React.PureComponent<TransactionProps, { }, { sku: str
 
     public render() {
         return (
-            <React.Fragment>
-                <h1 id="tabelLabel">Transacciones</h1>
-                <Form onSubmit={this.onSubmit.bind(this)}>
-                    <InputGroup>
-                        <Input type="text" id="sku" onChange={this.onChange.bind(this)} placeholder="SKU del Producto" />
-                        <InputGroupAddon addonType="append" onClick={this.onSubmit.bind(this)}>
-                            <InputGroupText>Buscar</InputGroupText>
-                        </InputGroupAddon>
-                    </InputGroup>
-                </Form>
+            <Card body>
+                <CardTitle><h1>Transacciones</h1></CardTitle>
+                <Row>
+                    <Col md="9">
+                        <Form onSubmit={this.onSubmit.bind(this)}>
+                            <InputGroup>
+                                <Input type="text" id="sku" onChange={this.onChange.bind(this)} placeholder="SKU del Producto" />
+                                <InputGroupAddon addonType="append" onClick={this.onSubmit.bind(this)} className="button-hover">
+                                    <InputGroupText>Buscar</InputGroupText>
+                                </InputGroupAddon>
+                            </InputGroup>
+                        </Form>
+                    </Col>
+                    <Col md="3">
+                        <InputGroup>
+                            <Input type="select" name="convertCurrency" id="convertCurrency" placeholder="Moneda de Conversión">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </Input>
+                        </InputGroup>
+                    </Col>
+                </Row>
+                
                 <br />
                 <br />
-                {this.renderTransactionsTable()}
-            </React.Fragment>
+                <TransactionsTable {...this.props} convertCurrency={this.state.convertCurrency} />
+            </Card>
         );
     }
 
     private ensureDataFetched() {
-        //this.props.requestCurrencyRates();
-        const sku = this.props.match.params.sku || "";
-        this.props.requestTransactions(sku);
         this.props.requestCurrencyRates();
+        const sku = this.props.match.params.sku || "";
+        this.props.requestTransactions(sku);        
     }
 
     private convertTransactions(convertedCurrency: string): TransactionsStore.ConvertedTransaction[] {
@@ -74,53 +98,6 @@ class Transactions extends React.PureComponent<TransactionProps, { }, { sku: str
 
             return conv ? conv : { ...transaction, conversionRate: 0, convertedAmount: -1, convertedCurrency: convertedCurrency };
         });
-    }
-
-    private renderTransactionsTable() {
-        let index = 1;
-        let convertedTransactions = this.convertTransactions("EUR");
-        let totalAmount = convertedTransactions.reduce((total: number, currentTransaction) => {
-            return roundNumber(total + currentTransaction.convertedAmount);
-        }, 0);
-
-        if (convertedTransactions.length) {
-            return (
-                <React.Fragment>
-                    <div className="row">
-                        <div className="col-lg-10 col-lg-offset-1">
-                            <h1>Total transacciones: EUR {totalAmount}</h1>
-                        </div>
-                    </div>
-                    <table className='table table-striped' aria-labelledby="tabelLabel">
-                        <thead>
-                            <tr>
-                                <th>SKU del Producto</th>
-                                <th>Moneda</th>
-                                <th>Monto Transacci&oacute;n</th>
-                                <th>Monto Convertido</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {convertedTransactions.map((transaction: TransactionsStore.ConvertedTransaction) => {
-                                return (
-                                    <tr key={index++}>
-                                        <td>{transaction.sku}</td>
-                                        <td>{transaction.currency}</td>
-                                        <td>{transaction.currency} {roundNumber(transaction.amount)}</td>
-                                        <td>{transaction.convertedCurrency} {roundNumber(transaction.convertedAmount)}</td>
-                                    </tr>
-                                );
-                            }
-                            )}
-                        </tbody>
-                    </table>
-                </React.Fragment>
-            );
-        } else {
-            return (
-                <div>No hay datos para mostrar!</div>
-            );
-        }
     }
 }
 
