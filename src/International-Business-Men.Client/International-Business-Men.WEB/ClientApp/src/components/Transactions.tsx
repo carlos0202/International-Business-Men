@@ -16,9 +16,11 @@ import {
     Card,
     CardTitle
 } from 'reactstrap';
-import { roundNumber, getConversionAmount } from '../utils/math';
 import { bindActionCreators } from 'redux';
 import TransactionsTable from './TransactionsTable';
+import {
+    getSupportedCurrencies
+} from '../utils/transformations';
 import './Transactions.css';
 
 // At runtime, Redux will merge together...
@@ -31,7 +33,7 @@ type TransactionProps =
 
 class Transactions extends React.PureComponent<TransactionProps, {}, { sku: string, convertCurrency: string }> {
     public state = {
-        sku: '',
+        sku: this.props.match.params.sku,
         convertCurrency: 'EUR'
     };
 
@@ -41,6 +43,7 @@ class Transactions extends React.PureComponent<TransactionProps, {}, { sku: stri
     }
 
     onChange = (evt: any) => this.setState({ sku: evt.target.value });
+    onCurrencyChange = (evt: any) => this.setState({ convertCurrency: evt.target.value });
 
     onSubmit = (e: any) => {
         e.preventDefault();
@@ -57,7 +60,8 @@ class Transactions extends React.PureComponent<TransactionProps, {}, { sku: stri
                     <Col md="9">
                         <Form onSubmit={this.onSubmit.bind(this)}>
                             <InputGroup>
-                                <Input type="text" id="sku" onChange={this.onChange.bind(this)} placeholder="SKU del Producto" />
+                                <Input type="text" id="sku" onChange={this.onChange.bind(this)} value={this.state.sku}
+                                    placeholder="SKU del Producto" />
                                 <InputGroupAddon addonType="append" onClick={this.onSubmit.bind(this)} className="button-hover">
                                     <InputGroupText>Buscar</InputGroupText>
                                 </InputGroupAddon>
@@ -66,20 +70,17 @@ class Transactions extends React.PureComponent<TransactionProps, {}, { sku: stri
                     </Col>
                     <Col md="3">
                         <InputGroup>
-                            <Input type="select" name="convertCurrency" id="convertCurrency" placeholder="Moneda de Conversión">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </Input>
+                            <Input type="select" name="convertCurrency" id="convertCurrency" onChange={this.onCurrencyChange.bind(this)}
+                                value={this.state.convertCurrency} placeholder="Moneda de Conversión">
+                                {Array.from(getSupportedCurrencies(this.props.currencyRates)).map(e => <option value={e}>{e}</option>)}
+                            </Input>
                         </InputGroup>
                     </Col>
                 </Row>
-                
+
                 <br />
                 <br />
-                <TransactionsTable {...this.props} convertCurrency={this.state.convertCurrency} />
+                <TransactionsTable {...this.props} convertCurrency={this.state.convertCurrency} currentPage={0} />
             </Card>
         );
     }
@@ -87,17 +88,7 @@ class Transactions extends React.PureComponent<TransactionProps, {}, { sku: stri
     private ensureDataFetched() {
         this.props.requestCurrencyRates();
         const sku = this.props.match.params.sku || "";
-        this.props.requestTransactions(sku);        
-    }
-
-    private convertTransactions(convertedCurrency: string): TransactionsStore.ConvertedTransaction[] {
-        let { transactions, currencyRates } = this.props;
-
-        return transactions.map((transaction: TransactionsStore.Transaction) => {
-            let conv = getConversionAmount(transaction, convertedCurrency, currencyRates);
-
-            return conv ? conv : { ...transaction, conversionRate: 0, convertedAmount: -1, convertedCurrency: convertedCurrency };
-        });
+        this.props.requestTransactions(sku);
     }
 }
 

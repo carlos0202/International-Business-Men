@@ -13,3 +13,14 @@ export const convertTransactions = (
         return conv ? conv : { ...transaction, conversionRate: 0, convertedAmount: -1, convertedCurrency: convertedCurrency };
     });
 }
+
+export const getSupportedCurrencies = (currencyTable: CurrencyRates.CurrencyRate[]) : Set<string> => {
+    let currencies = new Set<string>();
+
+    currencyTable.forEach(e => {
+        currencies.add(e.from);
+        currencies.add(e.to);
+    });
+
+    return currencies;
+}
