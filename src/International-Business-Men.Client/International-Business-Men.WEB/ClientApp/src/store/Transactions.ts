@@ -45,7 +45,6 @@ export const actionCreators = {
     requestTransactions: (sku: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
         // Only load data if it's something we don't already have (and are not already loading)
         const appState = getState();
-        console.log(sku, appState, appState.transactions);
         if (appState && appState.transactions && sku !== appState.transactions.sku) {
             let route = sku.length ? `/Transactions/${sku}` : '/Transactions';
             fetch(`${process.env.REACT_APP_API_URL}${route}`)
