@@ -1,4 +1,4 @@
-﻿import { Transaction } from '../store/Transactions';
+﻿import { Transaction, ConvertedTransaction } from '../store/Transactions';
 import { CurrencyRate } from '../store/CurrencyRates';
 
 export const roundNumber = (n: number, precision: number = 2) => {
@@ -6,22 +6,57 @@ export const roundNumber = (n: number, precision: number = 2) => {
 }
 
 export const getConversionAmount = (
-    transaction: Transaction,
+    transaction: Transaction | ConvertedTransaction,
     targetCurrency: string,
     currencyTable: CurrencyRate[],
     usedCurrencies: Set<string> = new Set<string>(),
-    currentDepth: number = 1): number => {
-    usedCurrencies.add(targetCurrency);
+    conversionRate: number = 1,
+    currentDepth: number = 1): ConvertedTransaction | undefined => {
+
+    if (transaction.currency === targetCurrency) {
+        return {
+            ...transaction,
+            convertedAmount: transaction.amount,
+            conversionRate: conversionRate,
+            convertedCurrency: targetCurrency
+        };
+    }
+
+    // Maximum navigation while doing conversions.
+    if (currentDepth > 10) return undefined;
+
     let currencyRate = currencyTable
         .find(e => e.from === transaction.currency && e.to === targetCurrency);
     if (currencyRate) {
-        let result = transaction.amount * currencyRate.rate;
+        conversionRate *= currencyRate.rate;
+        let result = transaction.amount * conversionRate;
 
-        return roundNumber(result, 2);
+        let outTransaction = {
+            ...transaction,
+            convertedAmount: roundNumber(result, 2),
+            conversionRate: conversionRate,
+            convertedCurrency: targetCurrency
+        };
+
+        return outTransaction;
     } else {
-        currencyRate = currencyTable
+        let currencyRate = currencyTable
             .find(e => e.from === transaction.currency && !usedCurrencies.has(e.to));
+        usedCurrencies.add(targetCurrency);
 
-        return getConversionAmount(transaction, targetCurrency, currencyTable, usedCurrencies);
+        if (!currencyRate) return undefined;
+
+        conversionRate *= currencyRate.rate;
+        currentDepth++;
+
+        let convertedTransaction = {
+            ...transaction,
+            convertedAmount: 0,
+            conversionRate: conversionRate,
+            convertedCurrency: currencyRate.to,
+            currency: currencyRate.to
+        };
+
+        return getConversionAmount(convertedTransaction, targetCurrency, currencyTable, usedCurrencies, conversionRate, currentDepth);
     }
 }

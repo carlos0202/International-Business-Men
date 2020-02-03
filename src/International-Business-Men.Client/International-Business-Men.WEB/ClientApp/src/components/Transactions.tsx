@@ -10,7 +10,7 @@ import {
     Input,
     InputGroupText
 } from 'reactstrap';
-import { roundNumber } from '../utils/math';
+import { roundNumber, getConversionAmount } from '../utils/math';
 import { bindActionCreators } from 'redux';
 
 // At runtime, Redux will merge together...
@@ -21,7 +21,10 @@ type TransactionProps =
     & typeof CurrencyRatesStore.actionCreators
     & RouteComponentProps<{ sku: string }>;
 
-class Transactions extends React.PureComponent<TransactionProps> {
+class Transactions extends React.PureComponent<TransactionProps, { }, { sku: string }> {
+    public state = {
+        sku: ''
+    };
 
     // This method is called when the component is first added to the document
     public componentDidMount() {
@@ -32,9 +35,9 @@ class Transactions extends React.PureComponent<TransactionProps> {
 
     onSubmit = (e: any) => {
         e.preventDefault();
-        let { sku } = this.state as any;
-        this.props.history.push(`Transactions/${sku}`);
-        this.props.requestTransactions(sku);
+        let sku = this.state.sku ? this.state.sku : "";
+        this.props.history.replace(`/Transactions/${sku}`, "urlHistory");
+        this.props.requestTransactions(sku || "");
     }
 
     public render() {
@@ -50,7 +53,6 @@ class Transactions extends React.PureComponent<TransactionProps> {
                     </InputGroup>
                 </Form>
                 <br />
-                <p>Esta es la tabla de transacciones almacenadas el proveedor de datos actual.</p>
                 <br />
                 {this.renderTransactionsTable()}
             </React.Fragment>
@@ -64,29 +66,51 @@ class Transactions extends React.PureComponent<TransactionProps> {
         this.props.requestCurrencyRates();
     }
 
-    private renderTransactionsTable() {
-        let index = 1;
+    private convertTransactions(convertedCurrency: string): TransactionsStore.ConvertedTransaction[] {
         let { transactions, currencyRates } = this.props;
 
-        if (transactions.length) {
+        return transactions.map((transaction: TransactionsStore.Transaction) => {
+            let conv = getConversionAmount(transaction, convertedCurrency, currencyRates);
+
+            return conv ? conv : { ...transaction, conversionRate: 0, convertedAmount: -1, convertedCurrency: convertedCurrency };
+        });
+    }
+
+    private renderTransactionsTable() {
+        let index = 1;
+        let convertedTransactions = this.convertTransactions("EUR");
+        let totalAmount = convertedTransactions.reduce((total: number, currentTransaction) => {
+            return roundNumber(total + currentTransaction.convertedAmount);
+        }, 0);
+
+        if (convertedTransactions.length) {
             return (
                 <React.Fragment>
-
+                    <div className="row">
+                        <div className="col-lg-10 col-lg-offset-1">
+                            <h1>Total transacciones: EUR {totalAmount}</h1>
+                        </div>
+                    </div>
                     <table className='table table-striped' aria-labelledby="tabelLabel">
                         <thead>
                             <tr>
                                 <th>SKU del Producto</th>
                                 <th>Moneda</th>
                                 <th>Monto Transacci&oacute;n</th>
+                                <th>Monto Convertido</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {transactions.map((transaction: TransactionsStore.Transaction) =>
-                                <tr key={index++}>
-                                    <td>{transaction.sku}</td>
-                                    <td>{transaction.currency}</td>
-                                    <td>{roundNumber(transaction.amount)}</td>
-                                </tr>
+                            {convertedTransactions.map((transaction: TransactionsStore.ConvertedTransaction) => {
+                                return (
+                                    <tr key={index++}>
+                                        <td>{transaction.sku}</td>
+                                        <td>{transaction.currency}</td>
+                                        <td>{transaction.currency} {roundNumber(transaction.amount)}</td>
+                                        <td>{transaction.convertedCurrency} {roundNumber(transaction.convertedAmount)}</td>
+                                    </tr>
+                                );
+                            }
                             )}
                         </tbody>
                     </table>

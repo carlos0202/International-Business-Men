@@ -17,6 +17,12 @@ export interface Transaction {
     amount: number;
 }
 
+export interface ConvertedTransaction extends Transaction {
+    convertedCurrency: string;
+    conversionRate: number;
+    convertedAmount: number;
+}
+
 
 // -----------------
 // ACTIONS - These are serializable (hence replayable) descriptions of state transitions.

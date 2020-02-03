@@ -2,6 +2,7 @@
 using International_Business_Men.DL.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -29,12 +30,14 @@ namespace International_Business_Men.DL.Services
                 transactions = await _onlineRepository.GetAll();
                 if (!transactions.Any())
                 {
+                    Debug.WriteLine($"No se obtuvo información del servidor remoto...");
                     transactions = await _localRepository.GetAll();
                 }
                 _localRepository.Refresh(transactions);
-            } catch(Exception)
+            } catch(Exception ex)
             {
                 //TODO log that online repo is dead.
+                Debug.WriteLine($"Ha ocurrido un error: {ex.Message}");
                 transactions = await _localRepository.GetAll();
             }
 
