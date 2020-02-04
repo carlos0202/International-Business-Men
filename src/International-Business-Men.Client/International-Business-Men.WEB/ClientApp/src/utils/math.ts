@@ -42,7 +42,7 @@ export const getConversionAmount = (
     } else {
         let currencyRate = currencyTable
             .find(e => e.from === transaction.currency && !usedCurrencies.has(e.to));
-        usedCurrencies.add(targetCurrency);
+        usedCurrencies.add(transaction.currency);
 
         if (!currencyRate) return undefined;
 
@@ -60,3 +60,40 @@ export const getConversionAmount = (
         return getConversionAmount(convertedTransaction, targetCurrency, currencyTable, usedCurrencies, conversionRate, currentDepth);
     }
 }
+
+export const getConversion = (
+    currRate: CurrencyRate,
+    sourceCurrency: string,
+    targetCurrency: string,
+    currencyTable: CurrencyRate[],
+    usedCurrencies: Set<string> = new Set<string>(),
+    currentDepth: number = 1): CurrencyRate | undefined => {
+
+    if (currRate.from === currRate.to) {
+        return currRate;
+    }
+
+    // Maximum navigation while doing conversions.
+    if (currentDepth > 10) return undefined;
+
+    let currencyRate = currencyTable
+        .find(e => e.from === sourceCurrency && e.to === targetCurrency);
+    if (currencyRate) {
+        currRate.rate *= currencyRate.rate;
+
+        return currRate;
+    } else {
+        let currencyRate = currencyTable
+            .find(e => e.from === currRate.from && (!usedCurrencies.has(e.to) && e.to !== targetCurrency));
+        usedCurrencies.add(currRate.from);
+
+        if (!currencyRate) return undefined;
+
+        sourceCurrency = currencyRate.to;
+        currRate.rate *= currencyRate.rate;
+        currentDepth++;
+
+        return getConversion(currRate, sourceCurrency, targetCurrency, currencyTable, usedCurrencies, currentDepth);
+    }
+}
+

@@ -54,6 +54,7 @@ class Transactions extends React.PureComponent<TransactionProps, {}, { sku: stri
     }
 
     public render() {
+        console.log(this.props.currencyRates);
         return (
             <Card body>
                 <CardTitle><h1>Transacciones</h1></CardTitle>
@@ -80,7 +81,8 @@ class Transactions extends React.PureComponent<TransactionProps, {}, { sku: stri
 
                 <br />
                 <br />
-                <TransactionsTable {...this.props} convertCurrency={this.state.convertCurrency} currentPage={0} />
+                <TransactionsTable currencyRates={this.props.currencyRates} convertCurrency={this.state.convertCurrency}
+                    transactions={this.props.transactions} isLoading={this.props.isLoading} currentPage={0} />
             </Card>
         );
     }

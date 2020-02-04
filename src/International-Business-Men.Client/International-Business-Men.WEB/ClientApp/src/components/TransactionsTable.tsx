@@ -2,12 +2,19 @@
 import { roundNumber } from '../utils/math';
 import { convertTransactions } from '../utils/transformations';
 import * as TransactionsStore from '../store/Transactions';
+import * as CurrencyRatesStore from '../store/CurrencyRates';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import LoadingSpinner from './LoadingSpinner';
 
-type TransactionsTableProps = any;
+type TransactionsTableProps = {
+    currentPage: number;
+    convertCurrency: string;
+    transactions: TransactionsStore.Transaction[],
+    currencyRates: CurrencyRatesStore.CurrencyRate[],
+    isLoading: boolean
+};
 
-class TransactionsTable extends React.PureComponent<TransactionsTableProps, {}, { currentPage: number, convertCurrency: string }> {
+class TransactionsTable extends React.PureComponent<any, {}, { currentPage: number, convertCurrency: string }> {
     public state = {
         currentPage: 0
     };
@@ -24,18 +31,19 @@ class TransactionsTable extends React.PureComponent<TransactionsTableProps, {}, 
         const { currentPage } = this.state;
         const { transactions, currencyRates, convertCurrency, isLoading } = this.props;
 
-        let index = 1;
-        let pagesCount = Math.ceil(transactions.length / pageSize);
-        let convertedTransactions = convertTransactions(convertCurrency, transactions, currencyRates);
-        let totalAmount = convertedTransactions.reduce((total: number, currentTransaction) => {
-            return roundNumber(total + currentTransaction.convertedAmount);
-        }, 0);
-
-        if (!convertedTransactions.length || isLoading) {           
+        if ((!transactions || !currencyRates) || !(transactions.length || !currencyRates.length) || isLoading) {           
             return (
                 <div><LoadingSpinner /></div>
             );
         } else {
+            let index = 1;
+            let pagesCount = Math.ceil(transactions.length / pageSize);
+            
+            let convertedTransactions = convertTransactions(convertCurrency, transactions, currencyRates);
+            let totalAmount = convertedTransactions.reduce((total: number, currentTransaction) => {
+                return roundNumber(total + currentTransaction.convertedAmount);
+            }, 0);
+
             return (
                 <React.Fragment>
                     <div className="row">

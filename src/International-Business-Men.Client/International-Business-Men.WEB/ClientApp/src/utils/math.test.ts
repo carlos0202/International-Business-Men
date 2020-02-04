@@ -1,4 +1,4 @@
-﻿import { roundNumber, getConversionAmount } from './math';
+﻿import { roundNumber, getConversionAmount, getConversion } from './math';
 
 const testRoundNumberData = [15.044, 16.555];
 const transactions = [
@@ -56,5 +56,25 @@ describe('Math utils tests.', () => {
         // Assert
         expect(result.convertedAmount).toBe(expectedAmount);
         expect(result.convertedCurrency).toBe(targetCurrency);
+    });
+
+    it('Should return correct missing conversion using existing table', () => {
+        // Arrange
+        let conv = {
+            from: 'AUD',
+            to: 'EUR',
+            rate: 1
+        };
+        let sourceCurrency = 'AUD';
+        let targetCurrency = 'EUR'; // AUD -> EUR
+        let expectedRate = 0.50784;
+        let paramArray = Array.from(currencyRates);
+
+        // Act
+        let result = getConversion(conv, sourceCurrency, targetCurrency, paramArray);
+
+        // Assert
+        expect(result.rate).toBe(expectedRate);
+        expect(paramArray).toStrictEqual(currencyRates);
     });
 });
