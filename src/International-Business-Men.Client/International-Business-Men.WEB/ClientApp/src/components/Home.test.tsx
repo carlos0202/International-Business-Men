@@ -1,14 +1,14 @@
-import * as React from 'react';
+﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import App from './App';
+import Home from './Home';
 
-it('renders main App component witouth crashing', () => {
+it('renders Home component witouth crashing', () => {
     const storeFake = (state: any) => ({
-        default: () => {},
-        subscribe: () => {},
-        dispatch: () => {},
+        default: () => { },
+        subscribe: () => { },
+        dispatch: () => { },
         getState: () => ({ ...state })
     });
     const store = storeFake({}) as any;
@@ -16,7 +16,7 @@ it('renders main App component witouth crashing', () => {
     ReactDOM.render(
         <Provider store={store}>
             <MemoryRouter>
-                <App/>
+                <Home />
             </MemoryRouter>
         </Provider>, document.createElement('div'));
 });
