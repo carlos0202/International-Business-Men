@@ -2,13 +2,8 @@
 import { roundNumber } from '../utils/math';
 import { convertTransactions } from '../utils/transformations';
 import * as TransactionsStore from '../store/Transactions';
-import * as CurrencyRatesStore from '../store/CurrencyRates';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-
-interface TransactionsTableState {
-    currentPage: number;
-    convertCurrency: string;
-}
+import LoadingSpinner from './LoadingSpinner';
 
 type TransactionsTableProps = any;
 
@@ -25,9 +20,9 @@ class TransactionsTable extends React.PureComponent<TransactionsTableProps, {}, 
     }
 
     render() {
-        const pageSize = 50;
+        const pageSize = 10;
         const { currentPage } = this.state;
-        const { transactions, currencyRates, convertCurrency } = this.props;
+        const { transactions, currencyRates, convertCurrency, isLoading } = this.props;
 
         let index = 1;
         let pagesCount = Math.ceil(transactions.length / pageSize);
@@ -36,45 +31,56 @@ class TransactionsTable extends React.PureComponent<TransactionsTableProps, {}, 
             return roundNumber(total + currentTransaction.convertedAmount);
         }, 0);
 
-        if (convertedTransactions.length) {
+        if (!convertedTransactions.length || isLoading) {           
+            return (
+                <div><LoadingSpinner /></div>
+            );
+        } else {
             return (
                 <React.Fragment>
                     <div className="row">
-                        <div className="col-lg-10 col-lg-offset-1">
+                        <div className="col-md-6 d-flex justify-content-start">
                             <h4>Total transacciones: {convertCurrency} {totalAmount}</h4>
                         </div>
+                        <div className="col-md-6 d-flex justify-content-end">
+                            <Pagination aria-label="Transactions table pagination">
+                                <PaginationItem disabled={currentPage <= 0}>
+                                    <PaginationLink
+                                        onClick={e => this.handleClick(e, 0)}
+                                        first
+                                        href="#"
+                                    />
+                                </PaginationItem>
+                                <PaginationItem disabled={currentPage <= 0}>
+                                    <PaginationLink
+                                        onClick={e => this.handleClick(e, currentPage - 1)}
+                                        previous
+                                        href="#"
+                                    />
+                                </PaginationItem>
+                                <PaginationItem active={true}>
+                                    <PaginationLink onClick={e => this.handleClick(e, currentPage + 1)} href="#">
+                                        {currentPage + 1}
+                                    </PaginationLink>
+                                </PaginationItem>
+                                <PaginationItem disabled={currentPage >= pagesCount - 1}>
+                                    <PaginationLink
+                                        onClick={e => this.handleClick(e, currentPage + 1)}
+                                        next
+                                        href="#"
+                                    />
+                                </PaginationItem>
+                                <PaginationItem disabled={currentPage >= pagesCount - 1}>
+                                    <PaginationLink
+                                        onClick={e => this.handleClick(e, pagesCount - 1)}
+                                        last
+                                        href="#"
+                                    />
+                                </PaginationItem>
+                            </Pagination>
+                        </div>
                     </div>
-                    <Pagination aria-label="Transactions table pagination">
 
-                        <PaginationItem disabled={currentPage <= 0}>
-
-                            <PaginationLink
-                                onClick={e => this.handleClick(e, currentPage - 1)}
-                                previous
-                                href="#"
-                            />
-
-                        </PaginationItem>
-
-                        {[...Array(pagesCount)].map((page, i) =>
-                            <PaginationItem active={i === currentPage} key={i}>
-                                <PaginationLink onClick={e => this.handleClick(e, i)} href="#">
-                                    {i + 1}
-                                </PaginationLink>
-                            </PaginationItem>
-                        )}
-
-                        <PaginationItem disabled={currentPage >= pagesCount - 1}>
-
-                            <PaginationLink
-                                onClick={e => this.handleClick(e, currentPage + 1)}
-                                next
-                                href="#"
-                            />
-
-                        </PaginationItem>
-
-                    </Pagination>
                     <table className='table table-striped' aria-labelledby="tabelLabel">
                         <thead>
                             <tr>
@@ -103,10 +109,6 @@ class TransactionsTable extends React.PureComponent<TransactionsTableProps, {}, 
                         </tbody>
                     </table>
                 </React.Fragment>
-            );
-        } else {
-            return (
-                <div>No hay datos para mostrar!</div>
             );
         }
     }

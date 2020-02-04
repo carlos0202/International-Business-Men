@@ -2,6 +2,11 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as CurrencyRatesStore from '../store/CurrencyRates';
+import {
+    Card,
+    CardTitle
+} from 'reactstrap';
+import LoadingSpinner from './LoadingSpinner';
 
 // At runtime, Redux will merge together...
 type CurrencyRateProps =
@@ -16,13 +21,17 @@ class CurrencyRates extends React.PureComponent<CurrencyRateProps> {
     }
 
     public render() {
+        const { isLoading } = this.props;
         return (
-            <React.Fragment>
-                <h1 id="tabelLabel">Conversiones</h1>
-                <p>Esta es la tabla de conversi&oacute;n entre monedas soportada por el proveedor de datos actual.</p>
+            <Card body>
+                <CardTitle><h1 id="tabelLabel">Conversiones</h1></CardTitle>
+
                 <br />
-                {this.renderCurrencyRatesTable()}
-            </React.Fragment>
+                {(isLoading || !this.props.currencyRates) ?
+                    <div><LoadingSpinner /></div> :
+                    <div>{this.renderCurrencyRatesTable()}</div>
+                }
+            </Card>
         );
     }
 

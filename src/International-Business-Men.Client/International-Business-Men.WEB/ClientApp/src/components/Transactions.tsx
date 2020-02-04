@@ -9,8 +9,6 @@ import {
     InputGroupAddon,
     Input,
     InputGroupText,
-    FormGroup,
-    Label,
     Row,
     Col,
     Card,
@@ -48,8 +46,11 @@ class Transactions extends React.PureComponent<TransactionProps, {}, { sku: stri
     onSubmit = (e: any) => {
         e.preventDefault();
         let sku = this.state.sku ? this.state.sku : "";
+
+        if (!sku) return;
+
         this.props.history.replace(`/Transactions/${sku}`, "urlHistory");
-        this.props.requestTransactions(sku || "");
+        this.props.requestTransactions(sku);
     }
 
     public render() {
@@ -60,8 +61,7 @@ class Transactions extends React.PureComponent<TransactionProps, {}, { sku: stri
                     <Col md="9">
                         <Form onSubmit={this.onSubmit.bind(this)}>
                             <InputGroup>
-                                <Input type="text" id="sku" onChange={this.onChange.bind(this)} value={this.state.sku}
-                                    placeholder="SKU del Producto" />
+                                <Input type="text" id="sku" onChange={this.onChange.bind(this)} placeholder="SKU del Producto" />
                                 <InputGroupAddon addonType="append" onClick={this.onSubmit.bind(this)} className="button-hover">
                                     <InputGroupText>Buscar</InputGroupText>
                                 </InputGroupAddon>
@@ -72,7 +72,7 @@ class Transactions extends React.PureComponent<TransactionProps, {}, { sku: stri
                         <InputGroup>
                             <Input type="select" name="convertCurrency" id="convertCurrency" onChange={this.onCurrencyChange.bind(this)}
                                 value={this.state.convertCurrency} placeholder="Moneda de Conversión">
-                                {Array.from(getSupportedCurrencies(this.props.currencyRates)).map(e => <option value={e}>{e}</option>)}
+                                {Array.from(getSupportedCurrencies(this.props.currencyRates)).map(e => <option key={e} value={e}>{e}</option>)}
                             </Input>
                         </InputGroup>
                     </Col>
