@@ -3,7 +3,7 @@ import { roundNumber } from '../utils/math';
 import { convertTransactions } from '../utils/transformations';
 import * as TransactionsStore from '../store/Transactions';
 import * as CurrencyRatesStore from '../store/CurrencyRates';
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { Pagination, PaginationItem, PaginationLink, Input } from 'reactstrap';
 import LoadingSpinner from './LoadingSpinner';
 
 type TransactionsTableProps = {
@@ -14,9 +14,10 @@ type TransactionsTableProps = {
     isLoading: boolean
 };
 
-class TransactionsTable extends React.PureComponent<any, {}, { currentPage: number, convertCurrency: string }> {
+class TransactionsTable extends React.PureComponent<any, {}, { currentPage: number, convertCurrency: string, pageSize: number }> {
     public state = {
-        currentPage: 0
+        currentPage: 0,
+        pageSize: 10
     };
 
     handleClick(e: any, index: number) {
@@ -26,8 +27,16 @@ class TransactionsTable extends React.PureComponent<any, {}, { currentPage: numb
         });
     }
 
+    handlePageSizeChange(e: any) {
+        e.preventDefault();
+        this.setState({
+            pageSize: e.target.value,
+            currentPage: 0
+        });
+    }
+
     render() {
-        const pageSize = 10;
+        const pageSize = this.state.pageSize;
         const { currentPage } = this.state;
         const { transactions, currencyRates, convertCurrency, isLoading } = this.props;
 
@@ -50,7 +59,16 @@ class TransactionsTable extends React.PureComponent<any, {}, { currentPage: numb
                         <div className="col-md-6 d-flex justify-content-start">
                             <h4>Total transacciones: {convertCurrency} {totalAmount}</h4>
                         </div>
-                        <div className="col-md-6 d-flex justify-content-end">
+                        <div className="col-md-2 d-flex justify-content-end">
+                            <Input type="select" name="pageSize" id="convertCurrency" onChange={this.handlePageSizeChange.bind(this)}
+                                value={this.state.pageSize} placeholder="Registros por página">
+                                <option value={10}>10</option>
+                                <option value={50}>50</option>
+                                <option value={100}>100</option>
+                                <option value={transactions.length}>Todos</option>
+                            </Input>
+                        </div>
+                        <div className="col-md-4 d-flex justify-content-end">
                             <Pagination aria-label="Transactions table pagination">
                                 <PaginationItem disabled={currentPage <= 0}>
                                     <PaginationLink

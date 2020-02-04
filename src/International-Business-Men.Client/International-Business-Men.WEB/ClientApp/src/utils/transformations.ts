@@ -72,7 +72,3 @@ export const fillCurrencyTable = (currencyRates: CurrencyRates.CurrencyRate[])
 
     return currencyRates;
 }
-
-export const copy = (obj: any) => {
-    return JSON.parse(JSON.stringify(obj));
-}
