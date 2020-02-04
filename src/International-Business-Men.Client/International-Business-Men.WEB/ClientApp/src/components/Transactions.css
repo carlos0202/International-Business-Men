@@ -1,3 +1,8 @@
 ﻿.button-hover:hover {
     cursor: pointer!important;
 }
+
+
+.card.card-body {
+    margin-bottom: 65px;
+}
