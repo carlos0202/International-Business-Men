@@ -8,7 +8,7 @@ import {
     Form, InputGroup,
     InputGroupAddon,
     Input,
-    InputGroupText,
+    Button,
     Row,
     Col,
     Card,
@@ -31,7 +31,7 @@ type TransactionProps =
 
 class Transactions extends React.PureComponent<TransactionProps, {}, { sku: string, convertCurrency: string }> {
     public state = {
-        sku: this.props.match.params.sku,
+        sku: this.props.match.params.sku || "",
         convertCurrency: 'EUR'
     };
 
@@ -41,7 +41,16 @@ class Transactions extends React.PureComponent<TransactionProps, {}, { sku: stri
     }
 
     onChange = (evt: any) => this.setState({ sku: evt.target.value });
+
     onCurrencyChange = (evt: any) => this.setState({ convertCurrency: evt.target.value });
+
+    onClear = (evt: any) => {
+        evt.preventDefault();
+        this.setState({ sku: "" });
+        this.props.history.push(`/Transactions`);
+        this.props.requestCurrencyRates();
+        this.props.requestTransactions("");
+    }
 
     onSubmit = (e: any) => {
         e.preventDefault();
@@ -49,12 +58,13 @@ class Transactions extends React.PureComponent<TransactionProps, {}, { sku: stri
 
         if (!sku) return;
 
-        this.props.history.replace(`/Transactions/${sku}`, "urlHistory");
+        this.props.requestCurrencyRates();
+        this.props.history.push(`/Transactions/${sku}`);
         this.props.requestTransactions(sku);
     }
 
     public render() {
-        console.log(this.props.currencyRates);
+
         return (
             <Card body>
                 <CardTitle><h1>Transacciones</h1></CardTitle>
@@ -62,9 +72,13 @@ class Transactions extends React.PureComponent<TransactionProps, {}, { sku: stri
                     <Col md="9">
                         <Form onSubmit={this.onSubmit.bind(this)}>
                             <InputGroup>
-                                <Input type="text" id="sku" onChange={this.onChange.bind(this)} placeholder="SKU del Producto" />
+                                <InputGroupAddon addonType="prepend" onClick={this.onClear.bind(this)} className="button-hover">
+                                    <Button className="bg-default">Limpiar</Button>
+                                </InputGroupAddon>
+                                <Input type="text" id="sku" onChange={this.onChange.bind(this)} placeholder="SKU del Producto"
+                                    value={this.state.sku} />
                                 <InputGroupAddon addonType="append" onClick={this.onSubmit.bind(this)} className="button-hover">
-                                    <InputGroupText>Buscar</InputGroupText>
+                                    <Button className=" bg-primary">Buscar</Button>
                                 </InputGroupAddon>
                             </InputGroup>
                         </Form>
@@ -97,8 +111,10 @@ class Transactions extends React.PureComponent<TransactionProps, {}, { sku: stri
 export default connect(
     (state: ApplicationState) => {
         const { transactions, currencyRates } = state;
+        const isLoading = (transactions && transactions.isLoading) ||
+            (currencyRates && currencyRates.isLoading);
 
-        return { ...transactions, ...currencyRates };
+        return { ...transactions, ...currencyRates, isLoading };
     }, // Selects which state properties are merged into the component's props
     (dispatch: any) => {
         return {

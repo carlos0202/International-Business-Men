@@ -1,23 +1,5 @@
 ﻿import { roundNumber, getConversionAmount, getConversion } from './math';
-
-const testRoundNumberData = [15.044, 16.555];
-const transactions = [
-    { "sku": "T2006", "amount": 10.00, "currency": "USD" },
-    { "sku": "M2007", "amount": 34.57, "currency": "CAD" },
-    { "sku": "R2008", "amount": 17.95, "currency": "AUD" },
-    { "sku": "T2006", "amount": 7.63, "currency": "EUR" },
-    { "sku": "B2009", "amount": 21.23, "currency": "USD" }
-];
-// missing AUD to EUR conversion.
-const currencyRates = [
-    { "from": "EUR", "to": "USD", "rate": 1.359 },
-    { "from": "CAD", "to": "EUR", "rate": 0.732 },
-    { "from": "USD", "to": "EUR", "rate": 0.736 },
-    { "from": "EUR", "to": "CAD", "rate": 1.366 },
-    { "from": "USD", "to": "AUD", "rate": 1.45 },
-    { "from": "AUD", "to": "USD", "rate": 0.69 },
-    { "from": "CAD", "to": "AUD", "rate": 1.96 }
-];
+import { transactions, currencyRates, testRoundNumberData } from '../../test/setup/test-data.json';
 
 describe('Math utils tests.', () => {
     it('should round 2 decimals correctly', () => {
@@ -75,6 +57,31 @@ describe('Math utils tests.', () => {
 
         // Assert
         expect(result.rate).toBe(expectedRate);
+        expect(paramArray).toStrictEqual(currencyRates);
+    });
+
+    it('Should return undefined on any missing or empty property', () => {
+        // Arrange
+        let conv = {
+            from: 'AUD',
+            to: 'EUR',
+            rate: 1
+        };
+        let sourceCurrency = 'AUD';
+        let targetCurrency = 'EUR'; // AUD -> EUR
+        let expectedResult = undefined;
+        let paramArray = Array.from(currencyRates);
+
+        // Act
+        let result =
+            getConversion(undefined, sourceCurrency, targetCurrency, paramArray) || // missing conversion
+            getConversion(conv, undefined, targetCurrency, paramArray) || // missing sourceCurrency
+            getConversion(conv, sourceCurrency, undefined, paramArray) || // missing targetCurrency
+            getConversion(conv, sourceCurrency, targetCurrency, undefined) || // missing currencyTable
+            getConversion(undefined, undefined, undefined, undefined); // missing all required values
+
+        // Assert
+        expect(result).toBe(expectedResult);
         expect(paramArray).toStrictEqual(currencyRates);
     });
 });

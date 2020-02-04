@@ -41,24 +41,26 @@ class CurrencyRates extends React.PureComponent<CurrencyRateProps> {
 
     private renderCurrencyRatesTable() {
         return (
-            <table className='table table-striped' aria-labelledby="tabelLabel">
-                <thead>
-                    <tr>
-                        <th>Moneda Fuente</th>
-                        <th>Moneda Destino</th>
-                        <th>Valor de Conversi&oacute;n</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.props.currencyRates.map((currencyRate: CurrencyRatesStore.CurrencyRate) =>
-                        <tr key={`${currencyRate.from}-${currencyRate.to}`}>
-                            <td>{currencyRate.from}</td>
-                            <td>{currencyRate.to}</td>
-                            <td>{currencyRate.rate}</td>
+            <div className="table-responsive-md">
+                <table className='table table-striped table-bordered table-hover' aria-labelledby="currencyTableLabel">
+                    <thead className="thead-dark">
+                        <tr>
+                            <th>Moneda Fuente</th>
+                            <th>Moneda Destino</th>
+                            <th>Valor de Conversi&oacute;n</th>
                         </tr>
-                    )}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {this.props.currencyRates.map((currencyRate: CurrencyRatesStore.CurrencyRate) =>
+                            <tr key={`${currencyRate.from}-${currencyRate.to}`}>
+                                <td>{currencyRate.from}</td>
+                                <td>{currencyRate.to}</td>
+                                <td>{currencyRate.rate}</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }

@@ -62,5 +62,6 @@
 			"to": "AUD",
 			"rate": 1.96
 		}
-	]
+	],
+	"testRoundNumberData": [ 15.044, 16.555 ]
 }

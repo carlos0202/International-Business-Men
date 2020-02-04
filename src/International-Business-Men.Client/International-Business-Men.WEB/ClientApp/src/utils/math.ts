@@ -69,6 +69,14 @@ export const getConversion = (
     usedCurrencies: Set<string> = new Set<string>(),
     currentDepth: number = 1): CurrencyRate | undefined => {
 
+    if (!currRate ||
+        !sourceCurrency ||
+        !targetCurrency ||
+        !currencyTable ||
+        !currencyTable.length) {
+        return undefined;
+    }
+
     if (currRate.from === currRate.to) {
         return currRate;
     }
