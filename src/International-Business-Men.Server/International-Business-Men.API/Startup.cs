@@ -23,7 +23,7 @@ namespace International_Business_Men.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddLogging();
+            //services.AddLogging();
             services.AddControllers();
             // Add Cors with default options
             services.AddCors();

@@ -1,4 +1,5 @@
 using System;
+using NLog.Web;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -10,14 +11,22 @@ namespace International_Business_Men.API
         public static void Main(string[] args)
         {
             // default logger to catch nasty startup errors.
-            //TODO Configure log to catch fatal error during app boot.
+            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             try
             {
+                logger.Debug("init main");
                 CreateHostBuilder(args).Build().Run();
-            } catch(Exception)
+            }
+            catch (Exception exception)
             {
-            } finally
+                //NLog: catch setup errors
+                logger.Error(exception, "Stopped program because of exception");
+                throw;
+            }
+            finally
             {
+                // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+                NLog.LogManager.Shutdown();
             }
         }
 
@@ -26,9 +35,8 @@ namespace International_Business_Men.API
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
-                    logging.AddConsole();
-                    logging.AddDebug();
                 })
+                .UseNLog()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
