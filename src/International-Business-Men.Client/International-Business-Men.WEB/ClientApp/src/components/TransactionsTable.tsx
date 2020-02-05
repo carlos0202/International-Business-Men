@@ -16,7 +16,7 @@ type TransactionsTableProps = {
 
 class TransactionsTable extends React.PureComponent<TransactionsTableProps, {}, { currentPage: number, convertCurrency: string, pageSize: number }> {
     public state = {
-        currentPage: 0,
+        currentPage: this.props.currentPage,
         pageSize: 10,
         convertCurrency: 'EUR'
     };
@@ -34,6 +34,17 @@ class TransactionsTable extends React.PureComponent<TransactionsTableProps, {}, 
             pageSize: e.target.value,
             currentPage: 0
         });
+    }
+
+    componentDidUpdate(nextProps: TransactionsTableProps) {
+        const { transactions } = this.props;
+        if (nextProps.transactions !== transactions) {
+            this.setState({
+                currentPage: 0,
+                convertCurrency: this.state.convertCurrency,
+                pageSize: this.state.pageSize
+            });
+        }
     }
 
     render() {
