@@ -53,7 +53,7 @@ En esta página se muestra la lista de las transacciones (ventas) de todos los p
 La solución ofrecida para el requerimiento se divide en 2 partes principales:
 
 - Un servicio web RESTFUL desarrollado en ASP.NET CORE 3.1 que contiene una capa de persistencia de emergencia utilizando Entity Framework Core 3.1 como ORM para conectar a una instancia de base de datos local SQL Server Express (LocalDb).
-- Una aplicación web SPA desarrollada con REACT como framework principal para modelar la capa de presentación y conectar la información proveniente del servicio utilizando el apoyo de otras librerías/frameworks/lenguajes como Typescript, Redux, Thunk, React-Router, Bootstrap, entre otros.
+- Una aplicación web SPA desarrollada con react como framework principal para modelar la capa de presentación y conectar la información proveniente del servicio utilizando el apoyo de otras librerías/frameworks/lenguajes como typescript, redux, thunk, react-router, bootstrap, entre otros.
   La arquitectura de cada uno de los componentes principales previamente señalados es la siguiente:
 
 ## Arquitectura del webservice
@@ -62,4 +62,41 @@ La vista a nivel de componentes del webservice desarrollado es la siguiente:
 
 ![Webservice Components](/assets/main_components_backend.PNG)
 
+De este diagrama podemos enumerar los siguientes componentes:
+
+- **International Business Men Backend**: Es el componente principal y a su vez la solución que contiene todos los proyectos creados para diseñar el webservice ofrecido para la aplicación, por lo cual podemos decir que es el contenedor de la solución del lado del Backend.
+- **International_Business_Men.API**: Es el componente que contiene la definición de los métodos expuestos por el webservice (endpoints) desarrollados con ASP.NET Core 3.1.
+- **International_Business_Men.DL**: Es el componente que contiene la definición de los repositorios y servicios desarrollados que abstraen la implementación trivial del acceso a la capa de datos al componente que expone los métodos (enpoints) a la aplicación web cliente.
+- **International_Business_Men.DAL**: Es el componente responsable de implementar la capa de acceso a datos en los niveles niveles definidos (Acceso a servicio externo y base de datos local SQL Server con Entity Framework Core), siendo este componente el único dentro de la solución que conoce el origen de los datos ofrecidos.
+
+Para la realización de la solución se han utilizado diferentes librerías/frameworks/lenguajes tales como C#, ASP.NET Core 3.1, Entity Framework Core 3.1, SQL Server Express LocalDb, .NET Standard 2.1, NewtonSoft.Json, AutoMapper, Swagger, entre otros.
+Adicionalmente, se desarrollaron pruebas unitarias utilizando XUnit como test runner y Moq para proveer data de prueba desde los servicios y repositorios.
+Para realizar los logs de la aplicación se ha utilizado la librería provista por defecto en el template del proyecto, la cual imprime los logs de los sucesos de la aplicación directamente en la consola del Webserver.
+
+## Arquitectura de la aplicación web
+
+La vista a nivel de componentes de la aplicación web es la siguiente:
+
+![Web Apps Components](/assets/main_components_frontend.png)
+
+De este diagrama podemos enumerar los siguientes componentes principal:
+
+- **International Business Men Web**: Es el componente principal y a su vez la solución que contiene el proyecto creado para diseñar la aplicación web, por lo cual podemos decir que es el contenedor de la solución del lado del Fronted.
+- **International_Business_Men.Web**: Es el componente que contiene la aplicación contenedora desarrollada en ASP.NET Core 3.1 Core MVC cuya única finalidad es renderizar la aplicación web SPA creada con REACT contenida dentro del directorio ClientApp.
+
+Para la realización de la solución se han utilizado diferentes librerías/frameworks/lenguajes tales como Typescript 3.6, react, redux, thunk, react-router, bootstrap, reactstrap, react-dom, redux-logger, entre otros. Además utiliza otras librerías/framework para el apoyo durante la fase de desarrollo y pruebas unitarias tales como create-react-app, jest, cross-env, redux-mock-store, react-test-renderer, entre otros.
+Adicionalmente, se utilizan algunas librerías para mejorar la calidad del código producido como eslint y el propio hecho de utilizar typescript en lugar de javascript para el desarrollo principal de la solución web.
+
 # Instrucciones de Instalación
+
+## Prerrequisitos para el funcionamiento correcto de la solución
+
+Para que el webservice y la aplicación web funcionen correctamente luego del clonado exitoso del repositorio se deben cumplir los siguientes requisitos críticos del sistema:
+
+- ![Windows Client: 7, 8.1, 10 (1607+)](<[https://devblogs.microsoft.com/dotnet/announcing-net-core-3-1/](https://devblogs.microsoft.com/dotnet/announcing-net-core-3-1/)>)
+- NodeJs version: ^8.12.0 || ^10.13.0 || >=11.10.1
+- Microsoft SQL Server Express LocalDb 13.0.4001.0 o superior
+
+Adicionalmente, es recomendable tener configurado Github for Desktop o en su defecto tener el cliente de Git instalado localmente para el clonado del repositorio.
+
+## Configuración del ambiente
