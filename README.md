@@ -50,4 +50,9 @@ En esta página se muestra la lista de las transacciones (ventas) de todos los p
 
 # Arquitectura de la solución
 
-# Instrucciones de Instalación
+Además, se ha agregado soporte a swagger para facilitar las pruebas con el webservice creado. para acceder al recurso se debe utilizar el endpoint /swagger desde la ruta raíz del servicio publicado. Para el caso del ambiente de desarrollo por defecto la url será:
+
+[https://localhost:44347/swagger](https://localhost:44347/swagger)
+
+Dicho recurso muestra la siguiente interfaz:
+![Swagger definition file](/assets/service_swagger_definition.PNG)
