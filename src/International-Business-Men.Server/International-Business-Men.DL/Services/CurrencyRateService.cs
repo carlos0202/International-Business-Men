@@ -1,5 +1,6 @@
 ﻿using International_Business_Men.DAL.Models;
 using International_Business_Men.DL.Contracts;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,15 @@ namespace International_Business_Men.DL.Services
     {
         private readonly IRepository<CurrencyRate> _onlineRepository;
         private readonly ILocalSourceRepository<CurrencyRate> _localCurrencyRateRepository;
+        private readonly ILogger<CurrencyRateService> _logger;
 
-        public CurrencyRateService(IRepository<CurrencyRate> repository, 
-            ILocalSourceRepository<CurrencyRate> localCurrencyRateRepository)
+        public CurrencyRateService(IRepository<CurrencyRate> repository,
+            ILocalSourceRepository<CurrencyRate> localCurrencyRateRepository,
+            ILogger<CurrencyRateService> logger)
         {
             _onlineRepository = repository;
             _localCurrencyRateRepository = localCurrencyRateRepository;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<CurrencyRate>> GetAsync()
@@ -27,13 +31,20 @@ namespace International_Business_Men.DL.Services
             try
             {
                 rates = await _onlineRepository.GetAll();
-                if (!rates.Any()) {
+                if (!rates.Any())
+                {
+                    _logger.Log(
+                   LogLevel.Information,
+                   "No se obtuvo información de rates online. Usando servicio local.");
                     rates = await _localCurrencyRateRepository.GetAll();
                 }
                 _localCurrencyRateRepository.Refresh(rates);
-            } catch(Exception)
+            }
+            catch (Exception ex)
             {
-                //TODO log that online repo is dead.
+                _logger.Log(
+                    LogLevel.Warning, ex,
+                    "Error obteniendo información de rates online. Usando servicio local.");
                 rates = await _localCurrencyRateRepository.GetAll();
             }
 
@@ -49,12 +60,17 @@ namespace International_Business_Men.DL.Services
                 rates = _onlineRepository.Where(exp);
                 if (!rates.Any())
                 {
+                    _logger.Log(
+                   LogLevel.Information,
+                   "No se obtuvo información de rates online. Usando servicio local.");
                     rates = _localCurrencyRateRepository.Where(exp);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //TODO log that online repo is dead.
+                _logger.Log(
+                    LogLevel.Warning, ex,
+                    "Error obteniendo información de rates online. Usando servicio local.");
                 rates = _localCurrencyRateRepository.Where(exp);
             }
 

@@ -47,8 +47,9 @@ namespace International_Business_Men.API.Tests.ControllerTests
                 .Returns((Expression<Func<CurrencyRate, bool>> exp) => rates.AsQueryable().Where(exp));
             LocalRepository.Setup(x => x.Refresh(rates));
 
-            Service = new CurrencyRateService(OnlineRepository.Object, LocalRepository.Object);
             var Logger = (ILogger<CurrencyRatesController>)fixture.Server.Host.Services.GetService(typeof(ILogger<CurrencyRatesController>));
+            var logger = (ILogger<CurrencyRateService>)fixture.Server.Host.Services.GetService(typeof(ILogger<CurrencyRateService>));
+            Service = new CurrencyRateService(OnlineRepository.Object, LocalRepository.Object, logger);
             TestController = new CurrencyRatesController(Service, Logger);
         }
 

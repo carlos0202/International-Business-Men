@@ -47,7 +47,8 @@ namespace International_Business_Men.API.Tests.ControllerTests
                 .Returns((Expression<Func<ProductTransaction, bool>> exp) => transactions.AsQueryable().Where(exp));
             LocalRepository.Setup(x => x.Refresh(transactions));
 
-            Service = new TransactionService(OnlineRepository.Object, LocalRepository.Object);
+            var logger = (ILogger<TransactionService>)fixture.Server.Host.Services.GetService(typeof(ILogger<TransactionService>));
+            Service = new TransactionService(OnlineRepository.Object, LocalRepository.Object, logger);
             var Mapper = (IMapper)fixture.Server.Host.Services.GetService(typeof(IMapper));
             var Logger = (ILogger<TransactionsController>)fixture.Server.Host.Services.GetService(typeof(ILogger<TransactionsController>));
             TestController = new TransactionsController(Service, Mapper, Logger);

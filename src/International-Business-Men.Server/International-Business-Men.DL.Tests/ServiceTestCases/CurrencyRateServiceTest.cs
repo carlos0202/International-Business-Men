@@ -1,6 +1,8 @@
-﻿using International_Business_Men.DAL.Models;
+﻿using International_Business_Men.API;
+using International_Business_Men.DAL.Models;
 using International_Business_Men.DL.Contracts;
 using International_Business_Men.DL.Services;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ using Xunit;
 
 namespace International_Business_Men.DL.Tests.ServiceTestCases
 {
-    public class CurrencyRateServiceTest
+    public class CurrencyRateServiceTest: IClassFixture<TestFixture<Startup>>
     {
 
         private Mock<IRepository<CurrencyRate>> OnlineRepository { get; }
@@ -18,7 +20,7 @@ namespace International_Business_Men.DL.Tests.ServiceTestCases
         private IService<CurrencyRate> Service { get; }
 
 
-        public CurrencyRateServiceTest()
+        public CurrencyRateServiceTest(TestFixture<Startup> fixture)
         {
             var rates = new List<CurrencyRate>
             {
@@ -42,8 +44,8 @@ namespace International_Business_Men.DL.Tests.ServiceTestCases
             LocalRepository.Setup(x => x.Where(It.IsAny<Expression<Func<CurrencyRate, bool>>>()))
                 .Returns((Expression<Func<CurrencyRate, bool>> exp) => rates.AsQueryable().Where(exp));
             LocalRepository.Setup(x => x.Refresh(rates));
-
-            Service = new CurrencyRateService(OnlineRepository.Object, LocalRepository.Object);
+            var Logger = (ILogger<CurrencyRateService>)fixture.Server.Host.Services.GetService(typeof(ILogger<CurrencyRateService>));
+            Service = new CurrencyRateService(OnlineRepository.Object, LocalRepository.Object, Logger);
         }
 
         [Fact]

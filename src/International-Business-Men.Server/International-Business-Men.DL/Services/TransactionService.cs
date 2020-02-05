@@ -1,5 +1,6 @@
 ﻿using International_Business_Men.DAL.Models;
 using International_Business_Men.DL.Contracts;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,12 +15,15 @@ namespace International_Business_Men.DL.Services
     {
         private readonly IRepository<ProductTransaction> _onlineRepository;
         private readonly ILocalSourceRepository<ProductTransaction> _localRepository;
+        private readonly ILogger<TransactionService> _logger;
 
-        public TransactionService(IRepository<ProductTransaction> onlineRepository, 
-            ILocalSourceRepository<ProductTransaction> localRepository)
+        public TransactionService(IRepository<ProductTransaction> onlineRepository,
+            ILocalSourceRepository<ProductTransaction> localRepository,
+            ILogger<TransactionService> logger)
         {
             _onlineRepository = onlineRepository;
             _localRepository = localRepository;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<ProductTransaction>> GetAsync()
@@ -30,13 +34,18 @@ namespace International_Business_Men.DL.Services
                 transactions = await _onlineRepository.GetAll();
                 if (!transactions.Any())
                 {
-                    Debug.WriteLine($"No se obtuvo información del servidor remoto...");
+                    _logger.Log(
+                   LogLevel.Information,
+                   "No se obtuvo información de transacciones online. Usando servicio local.");
                     transactions = await _localRepository.GetAll();
                 }
                 _localRepository.Refresh(transactions);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                //TODO log that online repo is dead.
+                _logger.Log(
+                   LogLevel.Warning, ex,
+                   "Error obteniendo información de transacciones online. Usando servicio local.");
                 Debug.WriteLine($"Ha ocurrido un error: {ex.Message}");
                 transactions = await _localRepository.GetAll();
             }
@@ -53,12 +62,17 @@ namespace International_Business_Men.DL.Services
                 transactions = _onlineRepository.Where(exp);
                 if (!transactions.Any())
                 {
+                    _logger.Log(
+                   LogLevel.Information,
+                   "No se obtuvo información de transacciones online. Usando servicio local.");
                     transactions = _localRepository.Where(exp);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //TODO log that online repo is dead.
+                _logger.Log(
+                   LogLevel.Warning, ex,
+                   "Error obteniendo información de transacciones online. Usando servicio local.");
                 transactions = _localRepository.Where(exp);
             }
 

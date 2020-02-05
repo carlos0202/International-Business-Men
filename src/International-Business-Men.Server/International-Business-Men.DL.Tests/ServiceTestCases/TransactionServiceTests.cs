@@ -1,6 +1,8 @@
-﻿using International_Business_Men.DAL.Models;
+﻿using International_Business_Men.API;
+using International_Business_Men.DAL.Models;
 using International_Business_Men.DL.Contracts;
 using International_Business_Men.DL.Services;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ using Xunit;
 
 namespace International_Business_Men.DL.Tests.ServiceTestCases
 {
-    public class TransactionServiceTest
+    public class TransactionServiceTest : IClassFixture<TestFixture<Startup>>
     {
 
         private Mock<IRepository<ProductTransaction>> OnlineRepository { get; }
@@ -18,7 +20,7 @@ namespace International_Business_Men.DL.Tests.ServiceTestCases
         private IService<ProductTransaction> Service { get; }
 
 
-        public TransactionServiceTest()
+        public TransactionServiceTest(TestFixture<Startup> fixture)
         {
             var transactions = new List<ProductTransaction>
             {
@@ -43,7 +45,8 @@ namespace International_Business_Men.DL.Tests.ServiceTestCases
                 .Returns((Expression<Func<ProductTransaction, bool>> exp) => transactions.AsQueryable().Where(exp));
             LocalRepository.Setup(x => x.Refresh(transactions));
 
-            Service = new TransactionService(OnlineRepository.Object, LocalRepository.Object);
+            var logger = (ILogger<TransactionService>)fixture.Server.Host.Services.GetService(typeof(ILogger<TransactionService>));
+            Service = new TransactionService(OnlineRepository.Object, LocalRepository.Object, logger);
         }
 
         [Fact]
