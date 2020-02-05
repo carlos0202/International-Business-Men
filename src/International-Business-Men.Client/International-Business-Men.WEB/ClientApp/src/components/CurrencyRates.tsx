@@ -2,10 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as CurrencyRatesStore from '../store/CurrencyRates';
-import {
-    Card,
-    CardTitle
-} from 'reactstrap';
+import { Card, CardTitle } from 'reactstrap';
 import LoadingSpinner from './LoadingSpinner';
 
 // At runtime, Redux will merge together...
@@ -14,29 +11,23 @@ type CurrencyRateProps =
     & typeof CurrencyRatesStore.actionCreators; // ... plus action creators we've requested
 
 
-class CurrencyRates extends React.PureComponent<CurrencyRateProps> {
+export class CurrencyRates extends React.PureComponent<CurrencyRateProps> {
     // This method is called when the component is first added to the document
     public componentDidMount() {
-        this.ensureDataFetched();
+        this.props.requestCurrencyRates();
     }
 
     public render() {
-        const { isLoading } = this.props;
         return (
             <Card body>
                 <CardTitle><h1 id="tabelLabel">Conversiones</h1></CardTitle>
-
                 <br />
-                {(isLoading || !this.props.currencyRates) ?
-                    <div><LoadingSpinner /></div> :
+                {(this.props.isLoading) ?
+                    <LoadingSpinner /> :
                     <div>{this.renderCurrencyRatesTable()}</div>
                 }
             </Card>
         );
-    }
-
-    private ensureDataFetched() {
-        this.props.requestCurrencyRates();
     }
 
     private renderCurrencyRatesTable() {

@@ -29,7 +29,8 @@ type TransactionProps =
     & typeof CurrencyRatesStore.actionCreators
     & RouteComponentProps<{ sku: string }>;
 
-class Transactions extends React.PureComponent<TransactionProps, {}, { sku: string, convertCurrency: string }> {
+export class Transactions extends
+    React.PureComponent<TransactionProps, {}, { sku: string, convertCurrency: string }> {
     public state = {
         sku: this.props.match.params.sku || "",
         convertCurrency: 'EUR'

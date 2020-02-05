@@ -1,0 +1,387 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders Transactions component witouth crashing and to match snapshot 1`] = `
+<div
+  className="card card-body"
+>
+  <div
+    className="card-title"
+  >
+    <h1>
+      Transacciones
+    </h1>
+  </div>
+  <div
+    className="row"
+  >
+    <div
+      className="col-md-9"
+    >
+      <form
+        className=""
+        onSubmit={[Function]}
+      >
+        <div
+          className="input-group"
+        >
+          <div
+            className="button-hover input-group-prepend"
+            onClick={[Function]}
+          >
+            <button
+              aria-label={null}
+              className="bg-default btn btn-secondary"
+              onClick={[Function]}
+            >
+              Limpiar
+            </button>
+          </div>
+          <input
+            className="form-control"
+            id="sku"
+            onChange={[Function]}
+            placeholder="SKU del Producto"
+            type="text"
+            value="1"
+          />
+          <div
+            className="button-hover input-group-append"
+            onClick={[Function]}
+          >
+            <button
+              aria-label={null}
+              className=" bg-primary btn btn-secondary"
+              onClick={[Function]}
+            >
+              Buscar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div
+      className="col-md-3"
+    >
+      <div
+        className="input-group"
+      >
+        <select
+          className="form-control"
+          id="convertCurrency"
+          name="convertCurrency"
+          onChange={[Function]}
+          placeholder="Moneda de Conversi�n"
+          value="EUR"
+        >
+          <option
+            value="EUR"
+          >
+            EUR
+          </option>
+          <option
+            value="USD"
+          >
+            USD
+          </option>
+          <option
+            value="CAD"
+          >
+            CAD
+          </option>
+          <option
+            value="AUD"
+          >
+            AUD
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <br />
+  <br />
+  <div
+    className="row"
+  >
+    <div
+      className="col-xl-7 d-flex justify-content-start"
+    >
+      <h4>
+        Total 
+        <span
+          className="text-muted"
+        >
+          5
+        </span>
+         transacciones: 
+        <span
+          className="text-primary"
+        >
+          EUR
+        </span>
+         
+        65.05
+      </h4>
+    </div>
+    <div
+      className="col-xl-3 d-flex justify-content-center"
+    >
+      <select
+        className="form-control"
+        id="convertCurrency"
+        name="pageSize"
+        onChange={[Function]}
+        placeholder="Registros por página"
+        value={10}
+      >
+        <option
+          value={10}
+        >
+          10
+        </option>
+        <option
+          value={50}
+        >
+          50
+        </option>
+        <option
+          value={100}
+        >
+          100
+        </option>
+        <option
+          value={5}
+        >
+          Todos
+        </option>
+      </select>
+    </div>
+    <div
+      className="col-xl-2 d-flex justify-content-lg-end justify-content-center"
+    >
+      <nav
+        aria-label="Transactions table pagination"
+        className=""
+      >
+        <ul
+          className="pagination"
+        >
+          <li
+            className="page-item disabled"
+          >
+            <a
+              aria-label="First"
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+            >
+              <span
+                aria-hidden="true"
+              >
+                «
+              </span>
+              <span
+                className="sr-only"
+              >
+                First
+              </span>
+            </a>
+          </li>
+          <li
+            className="page-item disabled"
+          >
+            <a
+              aria-label="Previous"
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+            >
+              <span
+                aria-hidden="true"
+              >
+                ‹
+              </span>
+              <span
+                className="sr-only"
+              >
+                Previous
+              </span>
+            </a>
+          </li>
+          <li
+            className="page-item active"
+          >
+            <a
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+            >
+              1
+            </a>
+          </li>
+          <li
+            className="page-item disabled"
+          >
+            <a
+              aria-label="Next"
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+            >
+              <span
+                aria-hidden="true"
+              >
+                ›
+              </span>
+              <span
+                className="sr-only"
+              >
+                Next
+              </span>
+            </a>
+          </li>
+          <li
+            className="page-item disabled"
+          >
+            <a
+              aria-label="Last"
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+            >
+              <span
+                aria-hidden="true"
+              >
+                »
+              </span>
+              <span
+                className="sr-only"
+              >
+                Last
+              </span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <div
+    className="table-responsive-md"
+  >
+    <table
+      aria-labelledby="tableLabel"
+      className="table table-striped table-bordered table-hover"
+    >
+      <thead
+        className="thead-dark"
+      >
+        <tr>
+          <th>
+            SKU del Producto
+          </th>
+          <th>
+            Moneda
+          </th>
+          <th>
+            Monto Transacción
+          </th>
+          <th>
+            Monto Convertido
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            T2006
+          </td>
+          <td>
+            USD
+          </td>
+          <td>
+            USD
+             
+            10
+          </td>
+          <td>
+            EUR
+             
+            7.36
+          </td>
+        </tr>
+        <tr>
+          <td>
+            M2007
+          </td>
+          <td>
+            CAD
+          </td>
+          <td>
+            CAD
+             
+            34.57
+          </td>
+          <td>
+            EUR
+             
+            25.31
+          </td>
+        </tr>
+        <tr>
+          <td>
+            R2008
+          </td>
+          <td>
+            AUD
+          </td>
+          <td>
+            AUD
+             
+            17.95
+          </td>
+          <td>
+            EUR
+             
+            9.12
+          </td>
+        </tr>
+        <tr>
+          <td>
+            T2006
+          </td>
+          <td>
+            EUR
+          </td>
+          <td>
+            EUR
+             
+            7.63
+          </td>
+          <td>
+            EUR
+             
+            7.63
+          </td>
+        </tr>
+        <tr>
+          <td>
+            B2009
+          </td>
+          <td>
+            USD
+          </td>
+          <td>
+            USD
+             
+            21.23
+          </td>
+          <td>
+            EUR
+             
+            15.63
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;

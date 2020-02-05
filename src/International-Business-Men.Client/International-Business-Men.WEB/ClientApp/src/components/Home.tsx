@@ -6,7 +6,7 @@ const Home = () => (
     <div>
         <Jumbotron fluid>
             <Container fluid>
-                <h1 className="display-3">International Business Man App!</h1>
+                <h1 className="display-3">International Business Men App!</h1>
                 <p className="lead">Bienvenido a su app m&aacute;s completa para la gesti&oacute; de divisas!!!</p>
             </Container>
         </Jumbotron>
