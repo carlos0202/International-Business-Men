@@ -38,7 +38,7 @@ namespace International_Business_Men.API
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "BusinessMan API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "International Business Men API", Version = "v1" });
             });
 
             services.AddAutoMapper(typeof(Startup));
