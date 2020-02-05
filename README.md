@@ -123,7 +123,7 @@ Para que el webservice y la aplicación web funcionen correctamente luego del cl
 
  
 -  [Windows Client: 7, 8.1, 10 (1607+)](https://devblogs.microsoft.com/dotnet/announcing-net-core-3-1/)
-- NodeJs version: ^8.12.0 || ^10.13.0 || >=11.10.1
+- [NodeJs](https://nodejs.org/es/download/) version: ^8.12.0 || ^10.13.0 || >=11.10.1
 - [Microsoft SQL Server Express LocalDb](https://docs.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb?view=sql-server-ver15) 13.0.4001.0 o superior
 - [.NET Core 3.1 SDK](https://dotnet.microsoft.com/download/visual-studio-sdks)
 - [Visual studio 2019](https://visualstudio.microsoft.com/es/downloads/) (*Recomendado*)
