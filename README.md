@@ -126,7 +126,7 @@ Para que el webservice y la aplicación web funcionen correctamente luego del cl
 - [NodeJs](https://nodejs.org/es/download/) version: ^8.12.0 || ^10.13.0 || >=11.10.1
 - [Microsoft SQL Server Express LocalDb](https://docs.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb?view=sql-server-ver15) 13.0.4001.0 o superior
 - [.NET Core 3.1 SDK](https://dotnet.microsoft.com/download/visual-studio-sdks)
-- [Visual studio 2019](https://visualstudio.microsoft.com/es/downloads/) (*Recomendado*)
+- [Visual studio 2019 16.4](https://visualstudio.microsoft.com/es/downloads/) ([*Recomendado*](https://devblogs.microsoft.com/dotnet/announcing-net-core-3-1/))
 
   
 
@@ -160,4 +160,8 @@ Para la corrida de las pruebas del lado de la aplicación web, procedemos a abri
 ![Test Runner Client](/assets/client_unit_tests.png)
 
 # Consideraciones finales 
-//TODO
+
+Para la parte del servidor debemos tomar en cuenta que los métodos ofrecidos no realizan ningún tipo de cálculo u operación matemática, por lo cual su función principal es almacenar y obtener los datos de las 2 fuentes de datos configuradas. Una adición futura será que los datos sean persistidos en el webserver en archivos .json. 
+
+Para la aplicación del cliente debemos tomar en cuenta que los navegadores soportados son los mostrados en el siguiente enlace: [Ver navegadores soportados](https://browserl.ist/?q=%3E0.2%25%2C+not+dead%2C+not+ie+%3C%3D+11%2C+not+op_mini+all). Esta lista fué realizada con [browserl.ist](https://github.com/browserslist/browserslist) que sirve como soporte al module bundler utilizado para generar el código Javascript a partir del código Typescript escrito en la aplicación cliente. La lista de navegadores soportados excluye a Internet Explorer ya que incluirlo en la lista de soporte suele provocar que no se utilicen las útimas versiones de frameworks y librerías para programar en el cliente. 
+
