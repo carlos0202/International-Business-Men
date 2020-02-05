@@ -58,7 +58,7 @@ En esta página se muestra la lista de las transacciones (ventas) de todos los p
 La solución ofrecida para el requerimiento se divide en 2 partes principales:
 
 - Un servicio web RESTFUL desarrollado en ASP.NET CORE 3.1 que contiene una capa de persistencia de emergencia utilizando Entity Framework Core 3.1 como ORM para conectar a una instancia de base de datos local SQL Server Express (LocalDb).
-- Una aplicación web SPA desarrollada con react como framework principal para modelar la capa de presentación y conectar la información proveniente del servicio utilizando el apoyo de otras librerías/frameworks/lenguajes como typescript, redux, thunk, react-router, bootstrap, entre otros.
+- Una aplicación web SPA desarrollada con react como framework principal para modelar la capa de presentación y conectar la información proveniente del servicio utilizando el apoyo de otras librerías/frameworks/lenguajes como typescript, redux, redux-thunk, react-router, bootstrap, entre otros.
 
 La arquitectura de cada uno de los componentes principales previamente señalados es la siguiente:
 
@@ -109,7 +109,7 @@ De este diagrama podemos enumerar los siguientes componentes principal:
 
 -  **International_Business_Men.Web**: Es el componente que contiene la aplicación contenedora desarrollada en ASP.NET Core 3.1 Core MVC cuya única finalidad es renderizar la aplicación web SPA creada con REACT contenida dentro del directorio ClientApp.
 
-Para la realización de la solución se han utilizado diferentes librerías/frameworks/lenguajes tales como Typescript 3.6, react, redux, thunk, react-router, bootstrap, reactstrap, react-dom, redux-logger, entre otros. Además utiliza otras librerías/framework para el apoyo durante la fase de desarrollo y pruebas unitarias tales como create-react-app, jest, cross-env, redux-mock-store, react-test-renderer, entre otros.
+Para la realización de la solución se han utilizado diferentes librerías/frameworks/lenguajes tales como Typescript 3.6, react, redux, redux-thunk, react-router, bootstrap, reactstrap, react-dom, redux-logger, entre otros. Además utiliza otras librerías/framework para el apoyo durante la fase de desarrollo y pruebas unitarias tales como create-react-app, jest, cross-env, redux-mock-store, react-test-renderer, entre otros.
 
 Adicionalmente, se utilizan algunas librerías para mejorar la calidad del código producido como eslint y el propio hecho de utilizar typescript en lugar de javascript para el desarrollo principal de la solución web.
 
