@@ -52,7 +52,8 @@ export const actionCreators = {
             fetch(`${process.env.REACT_APP_API_URL}/CurrencyRates`)
                 .then(response => response.json() as Promise<ResponseModel<CurrencyRate>>)
                 .then(data => {
-                    dispatch({ type: 'RECEIVE_CURRENCY_RATES', currencyRates: fillCurrencyTable(data.result) });
+                    const rates = fillCurrencyTable(data.result);
+                    dispatch({ type: 'RECEIVE_CURRENCY_RATES', currencyRates: rates });
                 });
 
             dispatch({ type: 'REQUEST_CURRENCY_RATES' });

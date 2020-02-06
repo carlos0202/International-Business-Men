@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Transactions;
+using System.Linq;
 
 namespace International_Business_Men.API.Controllers
 {
@@ -38,7 +38,7 @@ namespace International_Business_Men.API.Controllers
                 StatusCode = 200,
                 Result = _mapper.Map<IEnumerable<TransactionDTO>>(transactions)
             };
-            _logger.LogInformation($"Transaction info retreived at: {DateTime.Now}");
+            _logger.LogInformation($"Transaction info retreived at: {DateTime.Now}, count: {transactions.Count()}");
 
             return result;
         }
@@ -52,7 +52,7 @@ namespace International_Business_Men.API.Controllers
                 StatusCode = 200,
                 Result = _mapper.Map<IEnumerable<TransactionDTO>>(transactions)
             };
-            _logger.LogInformation($"Transaction info for sku: {sku}, retreived at: {DateTime.Now}");
+            _logger.LogInformation($"Transaction info for sku: {sku}, retreived at: {DateTime.Now}, count: {transactions.Count()}");
 
             return result;
         }

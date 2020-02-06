@@ -56,7 +56,7 @@ export const getMissingConversions = (
             }
         }
     });
-
+    console.log(missingConversions);
     const copyCurrencies = currencyRates;
     const resolvedConversions = new Array<CurrencyRates.CurrencyRate>();
     for (const element of missingConversions) {
@@ -73,30 +73,18 @@ export const getMissingConversions = (
 
 export const fillCurrencyTable = (currencyRates: CurrencyRates.CurrencyRate[], callStack: number = 1)
     : CurrencyRates.CurrencyRate[] => {
-    var supportedCurrencies = getSupportedCurrencies(currencyRates);
-    var missingConversions = getMissingConversions(currencyRates, supportedCurrencies);
+    console.log(`sent currencies: ${currencyRates.length}`)
+    const supportedCurrencies = getSupportedCurrencies(currencyRates);
+    const missingConversions = getMissingConversions(currencyRates, supportedCurrencies, []);
     missingConversions.forEach(i => currencyRates.push(i));
-
+    console.log(currencyRates.length, missingConversions.length);
     let currCount = Array.from(supportedCurrencies).length;
     let possibleCombinations = currCount * currCount - currCount;
-    console.log(possibleCombinations, currCount, missingConversions);
 
-    if (currencyRates.length === possibleCombinations || callStack > 3) {
+    if (currencyRates.length === possibleCombinations || callStack > 5) {
         return currencyRates;
     } else {
         callStack++
         return fillCurrencyTable(currencyRates, callStack);
     }
-    //return currencyRates;
-}
-
-const factorial = (num: number) : number => {
-    var result = num;
-    if (num === 0 || num === 1)
-        return 1;
-    while (num > 1) {
-        num--;
-        result *= num;
-    }
-    return result;
 }
