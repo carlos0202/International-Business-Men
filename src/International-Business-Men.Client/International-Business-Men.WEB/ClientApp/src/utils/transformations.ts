@@ -57,25 +57,33 @@ export const getMissingConversions = (
         }
     });
 
-    const copyCurrencies = currencyRates;
     const resolvedConversions = new Array<CurrencyRates.CurrencyRate>();
-    for (const element of missingConversions) {
-        var t = element;
-        const conv = getConversion(t, t.from, t.to, copyCurrencies);
+    for (let i : number = 0; i < missingConversions.length; i++) {
+        var t = missingConversions[i];
+        const conv = getConversion(t, t.from, t.to, currencyRates);
 
         if (conv) {
             resolvedConversions.push(conv);
         }
     };
 
-    return resolvedConversions;;
+
+    return resolvedConversions;
 }
 
-export const fillCurrencyTable = (currencyRates: CurrencyRates.CurrencyRate[])
+export const fillCurrencyTable = (currencyRates: CurrencyRates.CurrencyRate[], callStack: number = 1)
     : CurrencyRates.CurrencyRate[] => {
-    var supportedCurrencies = getSupportedCurrencies(currencyRates);
-    var missingConversions = getMissingConversions(currencyRates, supportedCurrencies);
+    
+    const supportedCurrencies = getSupportedCurrencies(currencyRates);
+    const missingConversions = getMissingConversions(currencyRates, supportedCurrencies, []);
     missingConversions.forEach(i => currencyRates.push(i));
+    let currCount = Array.from(supportedCurrencies).length;
+    let possibleCombinations = currCount * currCount - currCount;
 
-    return currencyRates;
+    if (currencyRates.length === possibleCombinations || callStack > 5) {
+        return currencyRates.sort((a, b) => a.from > b.from ? 1: -1);
+    } else {
+        callStack++
+        return fillCurrencyTable(currencyRates, callStack);
+    }
 }

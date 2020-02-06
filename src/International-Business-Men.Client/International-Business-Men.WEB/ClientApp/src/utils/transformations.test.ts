@@ -61,7 +61,7 @@ describe('Transformations utils tests.', () => {
 
     it('should get missing conversions correctly', () => {
         // Arrange
-        let currencyTableCount = 4;
+        let currencyTableCount = 5;
 
         // Act
         let supportedCurrencies = getSupportedCurrencies(currencyRates);

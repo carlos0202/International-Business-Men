@@ -93,7 +93,8 @@ export const getConversion = (
     } else {
         let currencyRate = currencyTable
             .find(e => e.from === currRate.from && (!usedCurrencies.has(e.to) && e.to !== targetCurrency));
-        usedCurrencies.add(currRate.from);
+        usedCurrencies.add(sourceCurrency);
+        usedCurrencies.add(targetCurrency);
 
         if (!currencyRate) return undefined;
 
