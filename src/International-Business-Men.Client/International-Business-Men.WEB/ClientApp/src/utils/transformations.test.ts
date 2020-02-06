@@ -38,13 +38,13 @@ describe('Transformations utils tests.', () => {
 
     it('should fill currencyRates missing conversions correctly', () => {
         // Arrange
-        let currencyTableCount = 9;
+        let currencyTableCount = 12;
 
         // Act
         let result = fillCurrencyTable(currencyRates.slice());
 
         // Assert
-        expect(result.length).toBeGreaterThan(currencyTableCount);
+        expect(result.length).toBe(currencyTableCount);
     });
 
     it('should get supported currencies correctly', () => {
@@ -61,7 +61,7 @@ describe('Transformations utils tests.', () => {
 
     it('should get missing conversions correctly', () => {
         // Arrange
-        let currencyTableCount = 4;
+        let currencyTableCount = 5;
 
         // Act
         let supportedCurrencies = getSupportedCurrencies(currencyRates);

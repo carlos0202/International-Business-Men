@@ -42,7 +42,7 @@ La apariencia de la página de rates es la siguiente:
 ![Rates Page](/assets/web_rates_page.png)
 
   
-En esta página se muestra la tabla de conversiones (rates) entre las distintas monedas manejadas por el servicio fuente de información para la aplicación. Las conversiones faltantes se calculan en background y se muestran al final de la lista utilizando redondeo de 4 decimales.
+En esta página se muestra la tabla de conversiones (rates) entre las distintas monedas manejadas por el servicio fuente de información para la aplicación ordenadas por moneda fuente (ascendente). Las conversiones faltantes se calculan en background y se muestran utilizando redondeo de 4 decimales.
 
 ### Página de transacciones
 

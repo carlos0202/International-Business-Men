@@ -41,7 +41,7 @@ export const getMissingConversions = (
     missingConversions: Array<CurrencyRates.CurrencyRate> = new Array<CurrencyRates.CurrencyRate>())
     : CurrencyRates.CurrencyRate[] => {
     let allCurrencies = Array.from(supportedCurrencies);
-    console.log(`sent currencies: ${currencyRates.length}`);
+
     allCurrencies.forEach(c => {
         let destinationCurrencies = allCurrencies.filter(e => e !== c);
         for (let targetCurrency of destinationCurrencies) {
@@ -56,33 +56,17 @@ export const getMissingConversions = (
             }
         }
     });
-    console.log(`step 1a currencies: ${currencyRates.length}`);
 
-    //const resolvedConversions = new Array<CurrencyRates.CurrencyRate>();
-    //for (let i : number = 0; i < missingConversions.length; i++) {
-    //    var t = missingConversions[i];
-    //    const conv = getConversion(t, t.from, t.to, currencyRates);
-
-    //    if (conv) {
-    //        resolvedConversions.push(conv);
-    //    }
-    //};
-
-
-    return missingConversions;
-}
-
-export const resolveConvervionValues = (currencyRates: CurrencyRates.CurrencyRate[]):
-    CurrencyRates.CurrencyRate[] => {
     const resolvedConversions = new Array<CurrencyRates.CurrencyRate>();
-    for (let i: number = 0; i < currencyRates.length; i++) {
-        var t = currencyRates[i];
+    for (let i : number = 0; i < missingConversions.length; i++) {
+        var t = missingConversions[i];
         const conv = getConversion(t, t.from, t.to, currencyRates);
 
         if (conv) {
             resolvedConversions.push(conv);
         }
     };
+
 
     return resolvedConversions;
 }
@@ -91,17 +75,13 @@ export const fillCurrencyTable = (currencyRates: CurrencyRates.CurrencyRate[], c
     : CurrencyRates.CurrencyRate[] => {
     
     const supportedCurrencies = getSupportedCurrencies(currencyRates);
-    const missedConversions = getMissingConversions(currencyRates, supportedCurrencies, []);
-    console.log(`step 2 currencies: ${currencyRates.length}, missed: ${missedConversions.length}`);
-    const missingConversions = resolveConvervionValues(missedConversions);
-    console.log(`step 3 currencies: ${currencyRates.length}, missed: ${missingConversions.length}`);
+    const missingConversions = getMissingConversions(currencyRates, supportedCurrencies, []);
     missingConversions.forEach(i => currencyRates.push(i));
-    console.log(currencyRates.length, missingConversions.length);
     let currCount = Array.from(supportedCurrencies).length;
     let possibleCombinations = currCount * currCount - currCount;
 
     if (currencyRates.length === possibleCombinations || callStack > 5) {
-        return currencyRates;
+        return currencyRates.sort((a, b) => a.from > b.from ? 1: -1);
     } else {
         callStack++
         return fillCurrencyTable(currencyRates, callStack);
