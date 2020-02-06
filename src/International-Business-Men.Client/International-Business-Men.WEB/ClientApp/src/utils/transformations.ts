@@ -57,16 +57,20 @@ export const getMissingConversions = (
         }
     });
 
+    return missingConversions;
+}
+
+export const resolveConvervionValues = (missingRates: CurrencyRates.CurrencyRate[],
+        currencyRates: CurrencyRates.CurrencyRate[]): CurrencyRates.CurrencyRate[] => {
     const resolvedConversions = new Array<CurrencyRates.CurrencyRate>();
-    for (let i : number = 0; i < missingConversions.length; i++) {
-        var t = missingConversions[i];
+    for (let i: number = 0; i < missingRates.length; i++) {
+        var t = missingRates[i];
         const conv = getConversion(t, t.from, t.to, currencyRates);
 
         if (conv) {
             resolvedConversions.push(conv);
         }
     };
-
 
     return resolvedConversions;
 }
@@ -75,13 +79,14 @@ export const fillCurrencyTable = (currencyRates: CurrencyRates.CurrencyRate[], c
     : CurrencyRates.CurrencyRate[] => {
     
     const supportedCurrencies = getSupportedCurrencies(currencyRates);
-    const missingConversions = getMissingConversions(currencyRates, supportedCurrencies, []);
-    missingConversions.forEach(i => currencyRates.push(i));
+    const missedConversions = getMissingConversions(currencyRates, supportedCurrencies, []);
+    const resolvedConversions = resolveConvervionValues(missedConversions, currencyRates.slice());
+    resolvedConversions.forEach(i => currencyRates.push(i));
     let currCount = Array.from(supportedCurrencies).length;
     let possibleCombinations = currCount * currCount - currCount;
 
-    if (currencyRates.length === possibleCombinations || callStack > 5) {
-        return currencyRates.sort((a, b) => a.from > b.from ? 1: -1);
+    if (currencyRates.length === possibleCombinations || callStack > currCount) {
+        return currencyRates.sort((a, b) => a.from > b.from ? 1 : -1);
     } else {
         callStack++
         return fillCurrencyTable(currencyRates, callStack);
