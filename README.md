@@ -85,7 +85,7 @@ Para la realización de la solución se han utilizado diferentes librerías/fram
 
 Adicionalmente, se desarrollaron pruebas unitarias utilizando XUnit como test runner y Moq para proveer data de prueba desde los servicios y repositorios.
 
-Para realizar los logs de la aplicación se ha utilizado la librería provista por defecto en el template del proyecto, la cual imprime los logs de los sucesos de la aplicación directamente en la consola del Webserver.
+Para realizar los logs de la aplicación se ha utilizado la librería Nlog en el server, la cual almacena todos los logs producidos dento del directorio `**c:\temp**`.
 
   
 
