@@ -69,7 +69,7 @@ export class Transactions extends
         return (
             <Card body>
                 <CardTitle><h1>Transacciones</h1></CardTitle>
-                <Row>
+                <Row className="mb-4">
                     <Col md="9">
                         <Form onSubmit={this.onSubmit.bind(this)}>
                             <InputGroup>
@@ -94,8 +94,6 @@ export class Transactions extends
                     </Col>
                 </Row>
 
-                <br />
-                <br />
                 <TransactionsTable currencyRates={this.props.currencyRates} convertCurrency={this.state.convertCurrency}
                     transactions={this.props.transactions} isLoading={this.props.isLoading} currentPage={0} />
             </Card>
