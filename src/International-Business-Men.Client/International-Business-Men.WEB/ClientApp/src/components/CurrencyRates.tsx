@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as CurrencyRatesStore from '../store/CurrencyRates';
 import { Card, CardTitle } from 'reactstrap';
+import { roundNumber } from '../utils/math';
 import LoadingSpinner from './LoadingSpinner';
 
 // At runtime, Redux will merge together...
@@ -46,7 +47,7 @@ export class CurrencyRates extends React.PureComponent<CurrencyRateProps> {
                             <tr key={`${currencyRate.from}-${currencyRate.to}`}>
                                 <td>{currencyRate.from}</td>
                                 <td>{currencyRate.to}</td>
-                                <td>{currencyRate.rate}</td>
+                                <td>{roundNumber(currencyRate.rate, 4)}</td>
                             </tr>
                         )}
                     </tbody>

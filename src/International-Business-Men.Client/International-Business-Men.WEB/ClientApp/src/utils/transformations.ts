@@ -7,9 +7,8 @@ export const convertTransactions = (
     transactions: TransactionsStore.Transaction[],
     currencyRates: CurrencyRates.CurrencyRate[]): TransactionsStore.ConvertedTransaction[] => {
 
-    let currRates = fillCurrencyTable(currencyRates);
     return transactions.map((transaction: TransactionsStore.Transaction) => {
-        let conv = getConversionAmount(transaction, convertedCurrency, currRates);
+        let conv = getConversionAmount(transaction, convertedCurrency, currencyRates);
 
         return conv
             ? conv
