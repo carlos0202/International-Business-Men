@@ -45,7 +45,7 @@ namespace International_Business_Men.DL.Services
             {
                 _logger.Log(
                    LogLevel.Warning, ex,
-                   "Error obteniendo información de transacciones online. Usando servicio local.");
+                   "Error obteniendo información de transacciones local.");
                 Debug.WriteLine($"Ha ocurrido un error: {ex.Message}");
                 transactions = await _localRepository.GetAll();
             }
@@ -72,7 +72,7 @@ namespace International_Business_Men.DL.Services
             {
                 _logger.Log(
                    LogLevel.Warning, ex,
-                   "Error obteniendo información de transacciones online. Usando servicio local.");
+                   "Error obteniendo información de transacciones local.");
                 transactions = _localRepository.Where(exp);
             }
 
